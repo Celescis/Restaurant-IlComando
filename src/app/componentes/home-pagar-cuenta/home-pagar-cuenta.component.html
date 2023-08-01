@@ -1,0 +1,69 @@
+<ion-content [ngClass]="scanActivo?'scanner-activo':''">
+  <div *ngIf="MostrarPagar">
+
+    <ion-fab *ngIf="!scanActivo" horizontal="end" vertical="bottom" slot="fixed">
+      <ion-fab-button color="dark">
+        <ion-icon (click)="escanear()" name="qr-code" style="font-size: 30px;"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+
+    <div *ngIf="!scanActivo">
+      <div class="centrar-tabla">
+        <table class="tabla-pedido">
+          <thead>
+            <tr>
+              <th>PRODUCTO</th>
+              <th>CANTIDAD</th>
+              <th>PRECIO</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let producto of agruparProductos(pedido.productos)">
+              <tr>
+                <td>{{producto.nombre}}</td>
+                <td *ngIf="producto.cantidad > 1">{{producto.cantidad}}</td>
+                <td *ngIf="producto.cantidad === 1">1</td>
+                <td>${{producto.precio * producto.cantidad}}</td>
+              </tr>
+            </ng-container>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td colspan="3"><b>SUBTOTAL:</b> {{pedido.total}}</td>
+            </tr>
+            <tr>
+              <td colspan="3"><b>DESCUENTO:</b> {{(pedido.total * pedido.descuentoJuego)/100}}</td>
+            </tr>
+            <tr>
+              <td colspan="3"><b>PROPINA:</b> {{pedido.propina}}</td>
+            </tr>
+            <tr>
+              <td colspan="3"><b>TOTAL:</b> {{pedido.propina + pedido.total - ((pedido.total *
+                pedido.descuentoJuego)/100)}}</td>
+            </tr>
+            <tr>
+              <td colspan="3">
+                <button class="boton boton_pedido" (click)="PagarFinal()">Pagar</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <app-home-dejar-propina (PasamosPropina)="recibirPropina($event)" *ngIf="MostrarPropina"></app-home-dejar-propina>
+
+  <div *ngIf="scanActivo">
+    <h3 class="scanH3">Escanear QR</h3>
+    <div class="scan">
+      <div class="qrcode"></div>
+      <div class="border"></div>
+    </div>
+    <br>
+    <br>
+    <div>
+      <button class="botonscan" (click)="pararScan()">Detener</button>
+    </div>
+  </div>
+</ion-content>

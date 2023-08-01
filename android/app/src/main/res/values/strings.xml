@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">La Comanda PPS</string>
+    <string name="title_activity_main">La Comanda PPS</string>
+    <string name="package_name">com.comandappsfinal.app</string>
+    <string name="custom_url_scheme">com.comandappsfinal.app</string>
+    <string name="server_client_id">905166952303-rakrbboso9k6ckcbqlfo1991higq8h4a.apps.googleusercontent.com</string>
+</resources>

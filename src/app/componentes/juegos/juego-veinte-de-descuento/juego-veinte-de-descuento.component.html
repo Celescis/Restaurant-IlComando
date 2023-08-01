@@ -1,0 +1,47 @@
+<ion-content>
+  <section style="margin-top: 100px;">
+
+    <div class="cubo">
+      <div class="header">
+        <div class="header-item">
+          <img src="/assets/buscaminas/time0.gif" alt="Flag Image" style="width: 40px; height: 40px;">
+          <img [src]="flagsImages[0]" alt="Flag Image" style="width: 40px; height: 40px;">
+          <img [src]="flagsImages[1]" alt="Flag Image" style="width: 40px; height: 40px;">
+        </div>
+        <div class="header-item">
+          <img *ngIf="!this.gameOver" class="botonsonrisa" (click)="resetGame()" src="/assets/buscaminas/facesmile.gif"
+            alt="" style="width: 45px; height: 45px;">
+          <img *ngIf="this.gameOver" class="botonsonrisa" (click)="resetGame()" src="/assets/buscaminas/facedead.gif"
+            alt="" style="width: 45px; height: 45px;">
+        </div>
+        <div class="header-item">
+          <img [src]="timerImages[0]" alt="Time Image" style="width: 40px; height: 40px;">
+          <img [src]="timerImages[1]" alt="Time Image" style="width: 40px; height: 40px;">
+          <img [src]="timerImages[2]" alt="Time Image" style="width: 40px; height: 40px;">
+        </div>
+      </div>
+      <div class="container">
+        <div class="board">
+          <div class="row" *ngFor="let row of board; let i = index">
+            <div class="cell" *ngFor="let cell of row; let j = index">
+              <button (click)="clickCell(i, j)" (contextmenu)="flagCell(i, j, $event)">
+                <span *ngIf="getStateClass(i, j) === 'hidden'"></span>
+                <span *ngIf="getStateClass(i, j) === 'flagged'" style="width: 20px; margin-left: -18px;">🚩</span>
+                <span *ngIf="getStateClass(i, j) === 'revealed'" class="revealed">
+                  <ng-container *ngIf="board[i][j] !== -1 && board[i][j] !== -2">{{ board[i][j] }}</ng-container>
+                  <img *ngIf="board[i][j] === -1" src="/assets/buscaminas/bombrevealed.gif" alt="Bomba"
+                    style="width: 50px; height: 20px;">
+                  <img *ngIf="board[i][j] === -2" src="/assets/buscaminas/bombdeath.gif" alt="Bomba Explotada"
+                    style="width: 50px; height: 20px;">
+                </span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</ion-content>
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

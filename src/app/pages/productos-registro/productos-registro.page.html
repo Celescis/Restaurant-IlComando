@@ -1,0 +1,97 @@
+<ion-content>
+  <ion-header  style="font-size: 1.4rem; text-align: center; background: #236f2d;    color:#fff;">ALTA PRODUCTO</ion-header>
+
+  <ion-fab
+    horizontal="start"
+    vertical="bottom"
+    slot="fixed"
+  >
+    <ion-fab-button (click)="irAMenuAltas()" style="border: 3px solid #00000000; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/atras.png" class="img-logout" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+  <img class="imagen_usuario" src="{{src_imagen}}">
+
+  <form [formGroup]="formularioAlta" (ngSubmit)="registrar()">
+
+    <ion-slides pager="false" scrollbar="true">
+      <ion-slide>
+        <div>
+          <ion-icon class="flecha-der heartbeat" name="caret-forward-outline" (click)="goToSlide2()"></ion-icon>
+          <ion-input [(ngModel)]="producto.nombre" class="input" id="nombre" placeholder="Nombre"
+            formControlName="nombre">
+          </ion-input>
+          <ion-note slot="error" *ngIf="(nombre.dirty || nombre.touched) && nombre.errors" class="invalid">El nombre es requerido.
+          </ion-note>
+
+          <ion-input [(ngModel)]="producto.descripcion" class="input" id="descripcion" placeholder="Descripción"
+            formControlName="descripcion">
+          </ion-input>
+          <ion-note slot="error" class="invalid" *ngIf="(descripcion.dirty || descripcion.touched) && descripcion.errors">La descripción
+            es
+            requerida.
+          </ion-note>
+
+          <ion-input [(ngModel)]="producto.tiempoElaboracion" class="input" id="tiempoElaboracion"
+            placeholder="Elaboración (minutos)" formControlName="tiempoElaboracion"></ion-input>
+          <ion-note slot="error" class="invalid"
+            *ngIf="(tiempoElaboracion.dirty || tiempoElaboracion.touched) && tiempoElaboracion.errors?.required">El
+            tiempo de elaboración es
+            requerido.
+          </ion-note>
+          <ion-note slot="error" class="invalid" *ngIf="formularioAlta.controls.tiempoElaboracion.errors?.pattern &&
+          formularioAlta.controls.tiempoElaboracion.touched">
+            El tiempo de elaboración solo puede contener numeros
+          </ion-note>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div style="height: 100%">
+          <ion-icon class="flecha-izq heartbeat" name="caret-back-outline" (click)="goToSlide2()"></ion-icon>
+          <ion-input [(ngModel)]="producto.precio" class="input" id="precio" placeholder="Precio"
+            formControlName="precio">
+          </ion-input>
+          <ion-note slot="error" class="invalid" *ngIf="(precio.dirty || precio.touched) && precio.errors?.required">El precio es
+            requerido.
+          </ion-note>
+          <ion-note slot="error" class="invalid" *ngIf="formularioAlta.controls.precio.errors?.pattern &&
+          formularioAlta.controls.precio.touched">
+            El precio solo puede contener numeros
+          </ion-note>
+          <!--FOTOS-->
+          <div class="image-item" style="color: #000;">
+            <p>Imágenes subidas {{numeroImagen }} de 3 </p>
+          </div>
+          <ion-row class="uploaded-images">
+            <ion-avatar *ngFor="let item of this.fotos; let index=index">
+              <img class="div_imagen" [src]="item">
+            </ion-avatar>
+          </ion-row>
+          <!---->
+        </div>
+      </ion-slide>
+    </ion-slides>
+    <ion-card-content>
+      <button type="button" class="boton" (click)="goToSlide()" *ngIf="!formularioAlta.valid">
+        Continuar
+      </button>
+      <button type="submit" class="boton boton-registrar shake-horizontal" [disabled]="formularioAlta.invalid"
+        *ngIf="formularioAlta.valid">
+        Registrar
+      </button>
+    </ion-card-content>
+  </form>
+
+
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button (click)="sacarFoto()" color="danger">
+      <ion-icon name="camera-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+    <div *ngIf="this.spinner" class="div-spinner">
+      <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+    </div>

@@ -1,0 +1,7 @@
+{
+  "name": "La Comanda PPS SP",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

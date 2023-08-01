@@ -1,0 +1,15 @@
+import { Injectable } from '@angular/core';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReservasClienteService {
+
+  constructor(private fs: AngularFirestore) { }
+
+  traerReservas() {
+    const coleccion = this.fs.collection('reservas')
+    return coleccion.valueChanges();
+  }
+}

@@ -1,0 +1,27 @@
+<ion-content>
+  <ion-header style="font-size: 1.5rem">PROPINA</ion-header>
+
+  <!-- MENU SELECCION DE LISTADO CLIENTES O EMPLEADOS -->
+  <div class="boton-container">
+    <h1>SELECCIONE CUANTA PROPINA QUIERE DEJAR</h1>
+    <button type="button" class="boton" (click)="agregarPropina(4)">
+      20%
+    </button>
+    <button type="button" class="boton" (click)="agregarPropina(3)">
+      15%
+    </button>
+    <button type="button" class="boton" (click)="agregarPropina(2)">
+      10%
+    </button>
+    <button type="button" class="boton" (click)="agregarPropina(1)">
+      5%
+    </button>
+    <button type="button" class="boton" (click)="agregarPropina(0)">
+      0%
+    </button>
+  </div>
+</ion-content>
+
+    <div *ngIf="this.spinner" class="div-spinner">
+      <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+    </div>

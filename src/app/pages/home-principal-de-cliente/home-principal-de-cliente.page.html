@@ -1,0 +1,116 @@
+<ion-header [ngClass]="scanActivo?'scanner-activo':''">
+  <nav class="navbar navbar-expand-lg " style="background-color: #236f2d;" *ngIf="!scanActivo">
+    <span class="navbar-text ml-auto text-right" *ngIf="usuarioLogueado"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{usuarioLogueado.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{usuarioLogueado.nombre}}
+    </span>
+    <br>
+    <span class="navbar-text ml-auto text-right" *ngIf="auth.usuarioAnonimo"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{auth.usuarioAnonimo.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{auth.usuarioAnonimo.nombre}}
+    </span>
+  </nav>
+
+  <!--NAVBAR SIDE-->
+  <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''" style="z-index: 10000;" *ngIf="!this.scanActivo">
+    <div class="logo-container">
+      <button class="logo" (click)="toggleCollapse()"> <img src="assets/icon.png"
+          style="height: 40px;width: 50px; margin-right: 0px;margin-top: 2px;"></button>
+      <div class="logo-text" *ngIf="collapsed">Il Comando</div>
+      <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()"><i
+          class="fal fa-times close-icon"></i></button>
+    </div>
+    <ul class="sidenav-nav" *ngIf="usuarioLogueado || auth.usuarioAnonimo">
+      <li class="sidenav-nav-item" *ngIf="!this.scanActivo && !this.mostrarMenu && !verEncuestas">
+        <h3 href="" class="sidenav-nav-link" (click)="escanearDocumento()">
+          <ion-icon name="qr-code" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Escanear QR</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item"
+        *ngIf="!this.scanActivo && !this.mostrarMenu && !verEncuestas && !auth.usuarioAnonimo">
+        <h3 href="" class="sidenav-nav-link" [routerLink]="'/reservas-cliente'">
+          <ion-icon name="calendar-number" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Reservas</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item" *ngIf="!this.scanActivo && !this.mostrarMenu && !verEncuestas">
+        <h3 class="sidenav-nav-link" (click)="mostrarEncuestas()">
+          <ion-icon name="help-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Ver encuestas de clientes</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item"
+        *ngIf="(mostrarDiv || (this.scanCoincide && this.mostrarMenu)) && (!this.scanActivo && !verEncuestas)">
+        <h3 class="sidenav-nav-link" (click)="entrarListaEspera()">
+          <ion-icon name="list" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Entrar en la lista de espera</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item" *ngIf="verEncuestas">
+        <h3 class="sidenav-nav-link" (click)="esconderEncuestas()">
+          <ion-icon name="arrow-back-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Volver</span>
+        </h3>
+      </li>
+    </ul>
+  </div>
+</ion-header>
+
+<ion-content [ngClass]="scanActivo?'scanner-activo':''">
+
+  <div class="card_producto" *ngIf="mostrarCard"
+    style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <img src="/assets/icon.png" alt="">
+    <span style="color: #fff;">
+      <b style="text-transform: uppercase;">Bienvenido a Il Comando Resto</b> <br><br>
+      Utiliza la <b>barra de navegación</b> para acceder a las distintas opciones disponibles. <br><br>
+      <b style="color: rgb(255, 170, 170); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: large;"><b
+          style="text-transform: uppercase;"> Gracias</b> por elegirnos, disfrute su estadía! </b>
+    </span>
+  </div>
+
+  <div *ngIf="mostrarDiv || (this.scanCoincide && this.mostrarMenu)">
+    <div class="card_producto" *ngIf="!this.scanActivo && yaHayPedido"
+      style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+      <span style="color: #fff;">
+        Su mesa es la <b>número {{mesaYaHayPedido.numero}}</b>
+      </span>
+    </div>
+    <div *ngIf="!this.scanActivo && !verEncuestas" style="margin-top: 50%; height: 50%;">
+      <button class="boton" (click)="escanearQRmesa()">Escanear QR de MESA</button>
+    </div>
+  </div>
+
+  <div *ngIf="verEncuestas && !mostrarCard" style="height: 100%; width: 100%;">
+    <app-graficos-clientes></app-graficos-clientes>
+  </div>
+
+  <div *ngIf="scanActivo">
+    <h3 class="scanH3">Escanear QR</h3>
+    <div class="scan">
+      <div class="qrcode"></div>
+      <div class="border"></div>
+    </div>
+    <br>
+    <br>
+    <div>
+      <button class="botonscan" (click)="pararScan()">Detener</button>
+    </div>
+  </div>
+
+  <ion-fab (click)="cerrarSesion()" horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="danger" style="border: 3px solid #ffff; border-radius: 50%; overflow: hidden;">
+      <img src="/assets/cerrar-sesion.png" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+
+
+</ion-content>
+
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

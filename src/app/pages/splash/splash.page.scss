@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Damion&display=swap');
+
+ion-content {
+  font-family: Damion;
+  --background: url('./../../../assets/background.png');
+  align-items: center;
+  align-content: center;
+  text-align: center;
+
+@-webkit-keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+.container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 39%;
+  right: 130px;
+  transform: translateY(-50%);
+  width: 100px;
+  height: 100px;
+  max-width: 100%;
+
+  .img-splash {
+    -webkit-animation: rotate-center 3.5s ease-in-out both;
+    animation: rotate-center 3.5s ease-in-out both;
+    z-index: 1;
+    max-width: 500px;
+    height: 220px;
+  }
+}
+
+.datos {
+  -webkit-animation: rotate-scale-down-ver 2s linear both;
+  animation: rotate-scale-down-ver 2s linear both;
+  color: #000000;
+  z-index: 1;
+  text-align: center;
+  font-family: KeeponTruckin;
+  font-size: 60px;
+  margin-top: 140px;
+}
+
+.datos-nombres {
+  -webkit-animation: rotate-scale-down-ver 2s linear both;
+  animation: rotate-scale-down-ver 2s linear both;
+  color: #000000;
+  z-index: 1;
+  text-align: center;
+  font-family: KeeponTruckin;
+  font-size: 70px;
+  margin-top: 316px;
+  margin-right: 5px;
+}
+}

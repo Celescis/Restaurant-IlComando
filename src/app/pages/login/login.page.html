@@ -1,0 +1,131 @@
+<ion-content>
+  <ion-header class="transparent-header">
+      <ion-segment color="danger" class="segment">
+        <ion-segment-button [routerLink]="['/login']" style="color:rgb(255, 255, 255); font-weight: 600;">
+            Iniciar Sesión
+        </ion-segment-button>
+        <ion-segment-button [routerLink]="['/cliente-registro']" style="color:rgb(255, 255, 255); font-weight: 600;">
+            Registro
+        </ion-segment-button>
+          <ion-segment-button (click)="loginWithGoogleAndroid()" style="color:white">
+            <ion-icon name="logo-google" style="color: rgb(182, 0, 0);"></ion-icon>
+        </ion-segment-button>
+      </ion-segment>
+  </ion-header>
+    <div class="container">
+        <form [formGroup]='form' (ngSubmit)='this.login()'>
+            <div class="containerForm text-light">
+                <img [src]="this.logo" alt="" height="40%" width="40%">
+                <h1><b>Ingrese sus datos:</b></h1>
+
+                <div class="row">
+                    <div class="col-12">
+                        <ion-item style="--background: transparent;">
+                            <ion-label class="ms-1 text-light" position="floating" for="email"><b>Correo
+                                    electrónico</b></ion-label>
+                            <ion-input type="text" class="text-light" formControlName='email' name="email"
+                                required></ion-input>
+                        </ion-item>
+
+                        <div class='text-light px-2 error-text m-0'
+                            *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['required']">
+                            Ingrese su correo electrónico
+                        </div>
+                        <div class='text-light px-2 error-text m-0'
+                            *ngIf="form.get('email')?.touched && form.get('email')?.errors?.['email']">
+                            Ingrese un correo electrónico valido
+                        </div>
+                    </div>
+
+
+                    <div class="col-12">
+                        <ion-item style="--background: transparent;">
+                            <ion-label class="ms-1 text-light" position="floating"
+                                for="password"><b>Contraseña</b></ion-label>
+                            <ion-input type="password" class="text-light" formControlName='password' name="password"
+                                required>
+                            </ion-input>
+                        </ion-item>
+
+                        <div class='text-light px-2 error-text'
+                            *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['required']">
+                            Ingrese su contraseña
+                        </div>
+                        <div class='text-light px-2 error-text'
+                            *ngIf="form.get('password')?.touched && form.get('password')?.errors?.['minlength']">
+                            La contraseña debe tener 8 caracteres o mas
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <ion-button type="submit" [disabled]="form.invalid" class="mt-2" color="danger"
+                            style="font-size:12px;" fill="solid" expand="block">Ingresar</ion-button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+
+                <div class="col-4">
+                    <b
+                        style="display: flex;align-items: center;color: #ffffff; font-family: 'Dosis', sans-serif;">Cliente</b>
+                    <ion-fab (click)="accesoRapidoCliente()" class="custom-fab" horizontal="start">
+                        <ion-fab-button class="custom-fab-button">
+                            <img src="/assets/accesos/cliente.png" alt="">
+                        </ion-fab-button>
+                    </ion-fab>
+                </div>
+                <div class="col-4">
+                    <b
+                    style="display: flex;align-items: center;color: #ffffff; font-family: 'Dosis', sans-serif;transform: translateX(30%);">Metre</b>
+                    <ion-fab (click)="accesoRapidoMetre()" class="custom-fab" horizontal="center">
+                        <ion-fab-button class="custom-fab-button">
+                            <img src="/assets/accesos/metre.png" alt="">
+                        </ion-fab-button>
+                    </ion-fab>
+                </div>
+                <div class="col-4">
+                    <b
+                    style="display: flex;align-items: center;color: #ffffff; font-family: 'Dosis', sans-serif;transform: translateX(45%);">Bartender</b>
+                    <ion-fab (click)="accesoRapidoBartender()" class="custom-fab" horizontal="end">
+                        <ion-fab-button class="custom-fab-button">
+                            <img src="/assets/accesos/bartender.png" alt="">
+                        </ion-fab-button>
+                    </ion-fab>
+                </div>
+                <div class="col-4">
+                    <b
+                    style="color: #ffffff; font-family: 'Dosis', sans-serif; display: flex; transform: translateY(300%);">Mozo</b>
+                    <ion-fab (click)="accesoRapidoMozo()" class="custom-fab2" horizontal="start">
+                        <ion-fab-button class="custom-fab-button">
+                            <img src="/assets/accesos/mozo.png" alt="">
+                        </ion-fab-button>
+                    </ion-fab>
+                </div>
+                <div class="col-4">
+                    <b
+                    style="color: #ffffff; font-family: 'Dosis', sans-serif; display: flex; transform: translate(20%,300%);">Cocinero</b>
+                    <ion-fab (click)="accesoRapidoCocinero()" class="custom-fab2" horizontal="center">
+                        <ion-fab-button class="custom-fab-button" color="tertiary tint">
+                            <img src="/assets/accesos/cocinero.png" alt="" style="margin-top: -3px;height: 105%;">
+                        </ion-fab-button>
+                    </ion-fab>
+                </div>
+                <div class="col-4">
+                    <b
+                    style="color: #ffffff; font-family: 'Dosis', sans-serif; display: flex; transform: translate(45%,300%);">Supervisor</b>
+                    <ion-fab (click)="accesoRapidoSupervisor()" class="custom-fab2" horizontal="end">
+                        <ion-fab-button class="custom-fab-button">
+                            <img src="/assets/accesos/supervisor.png" alt="">
+                        </ion-fab-button>
+                    </ion-fab>
+                </div>
+            </div>
+        </form>
+
+    </div>
+  </ion-content>
+  <div *ngIf="this.spinner" class="div-spinner">
+    <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+  </div>

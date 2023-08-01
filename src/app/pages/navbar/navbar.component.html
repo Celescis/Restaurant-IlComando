@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg " style="background-color: #236f2d; ">
+
+  <span class="navbar-text ml-auto text-right" *ngIf="usuarioLogueado"
+    style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+    <img src="{{usuarioLogueado.foto}}" alt=""
+      style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{ usuarioLogueado.nombre }}
+  </span>
+  <br>
+</nav>
+
+<!--NAVBAR SIDE-->
+<div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''">
+  <div class="logo-container">
+    <button class="logo" (click)="toggleCollapse()"> <img src="assets/icon.png" style="height: 30px;width: 50px; margin-right: 0px;"></button>
+    <div class="logo-text" *ngIf="collapsed">Il Comando</div>
+    <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()"><i
+        class="fal fa-times close-icon"></i></button>
+  </div>
+  <ul class="sidenav-nav" *ngIf="this.usuarioLogueado">
+    <li class="sidenav-nav-item" *ngIf="this.usuarioLogueado.perfil == 'cliente' && currentRoute">  
+      <a href="" class="sidenav-nav-link" [routerLink]="'/reservas-cliente'">
+        <span class="sidenav-link-text" *ngIf="collapsed">Reservas</span>
+        <img src="/assets/reserva.png" alt="" class="sidenav-link-icon">
+      </a>
+    </li>
+  </ul>
+</div>

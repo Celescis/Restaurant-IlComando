@@ -1,0 +1,50 @@
+<ion-content>
+  <section class="ahorcado-container">
+    <div class="container juego-contenedor">
+      <h1 class="titulo-ahorcado">AHORCADO</h1>
+      <p class="intentos">Intentos {{ attempts }}/6</p>
+      <div class="contenedor-general">
+        <div class="row">
+          <div>
+            <img class="img-horca" src="/assets/ahorcado/horca_{{ image }}.jpg" alt="horca" />
+          </div>
+        </div>
+        <div class="row contenedor-botones" style="margin-top:10%">
+          <div class="row palabra-adivinar">
+            <div class="col-md-12 text-center" style="background-color: #28c423;display: block;border-radius: 45px;">
+              <div *ngFor="let hyphen of hyphenatedWord" class="d-inline">
+                <h1 class="d-inline p-2">{{ hyphen }}</h1>
+              </div>
+            </div>
+            <span class="puntaje">(Puntaje: {{ score }})</span>
+          </div>
+          <div class="container">
+            <button *ngFor="let letter of buttonLetters; let i=index" id="boton{{i}}" class="btn-letra"
+              (click)="sendLetter(letter, i)">
+              {{ letter }}
+            </button>
+          </div>
+          <div *ngIf="activeGame">
+            <ion-fab slot="fixed" vertical="top" horizontal="end">
+              <ion-fab-button (click)="generarPista()">
+                <ion-icon name="search-outline"></ion-icon>
+              </ion-fab-button>
+            </ion-fab>
+            <!-- <button class="btn-reiniciar" (click)="generarPista()">
+              PEDIR PISTA
+            </button> -->
+          </div>
+          <!-- <div *ngIf="!activeGame">
+            <button class="btn-reiniciar" (click)="restartGame()">
+              REINICIAR JUEGO
+            </button>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </section>
+</ion-content>
+
+  <div *ngIf="this.spinner" class="div-spinner">
+    <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+  </div>

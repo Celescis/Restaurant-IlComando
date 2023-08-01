@@ -1,0 +1,103 @@
+
+<ion-content>
+  <div style="background-color: #236f2d; border: double 10px #fff; align-items: center; justify-content: center;">
+    <div *ngIf="!this.realizoEncuesta" >
+
+      <form [formGroup]="forma" (ngSubmit)="agregarRespuesta()">
+
+        <h4 class="mb-3" style="text-align: center; margin: 0 auto;">¿Que le parecio el ambiente?</h4>
+        <input style="display: block; margin: 0 auto; width: 90%;" type="range" formControlName="satisfaccion" min="0" max="10">
+        <small class="invalid" *ngIf="forma.controls.satisfaccion.errors?.required &&
+        forma.controls.satisfaccion.touched">
+        
+      </small>
+      <small style="display: flex; justify-content: space-between;text-transform: uppercase">
+        <span
+        style="margin-left: 5%;">Malo</span>
+        <span
+        style="margin-right: 5%;">Bueno
+      </span>
+      </small>
+        <hr />
+                 <h4 class="mb-3" style="text-align: center; margin: 0 auto;">¿Las comidas y bebidas le gustaron en general?</h4>
+        <div class="checkbox" style="display: flex; text-align: center; margin: 0 auto;">
+          <h4 class="checkbox" style="margin-left: 10px; float: left;"><input type="checkbox"
+              formControlName="recomendarias" (click)="onValorCapturado(1)" [checked]="si"> Sí</h4>
+          <h4 class="checkbox" style="margin-left: 10px; float: right;"><input type="checkbox"
+              formControlName="recomendarias" (click)="onValorCapturado(2)" [checked]="no"> No</h4>
+          <small class="invalid" *ngIf="forma.controls.recomendarias.errors?.required &&
+          forma.controls.recomendarias.touched">
+            
+          </small>
+        </div>
+        <hr />
+       <div class="radio" style="text-align: center; margin: 0 auto;">
+          <h4 class="mb-3" style="text-align: center; margin: 0 auto;">¿Probo los juegos por descuento?</h4>
+
+          <div class="form-check">
+            <input value="0" formControlName="variedadMenu"  type="radio" class="form-check-input">
+            <label class="form-check-label">Si y me gustaron</label>
+          </div>
+
+          <div class="form-check">
+            <input value="1" formControlName="variedadMenu"  type="radio" class="form-check-input " required>
+            <label class="form-check-label" >Si, no me gustaron</label>
+          </div>
+
+          <div class="form-check">
+            <input value="2" type="radio" formControlName="variedadMenu" class="form-check-input " required>
+            <label class="form-check-label" >No los probe</label>
+          </div>
+          <small class="invalid" *ngIf="forma.controls.variedadMenu.errors?.required &&
+            forma.controls.variedadMenu.touched">
+            
+          </small>
+        </div>
+        <hr />
+
+         <div>
+          <h4 class="mb-3" style="text-align: center; margin: 0 auto;">¿El trato con el mozo fue bueno?</h4>
+
+          <select class="select" placeholder="Precio adecuado" formControlName="precioAdecuado" style="text-align: center; margin: 0 auto; display: block;">
+            <option value="">Seleccione la opción</option>
+            <option>Si</option>
+            <option>No</option>
+          </select>
+          <small class="invalid" *ngIf="forma.controls.precioAdecuado.errors?.required && forma.controls.precioAdecuado.touched">
+            
+          </small>
+        </div>
+        <hr />
+         <!--FOTOS-->
+        <div class="image-item">
+          <p style="text-align: center; margin: 0 auto; color: #fff;">Puede subir hasta 3 imagenes</p>
+          <p style="text-align: center; margin: 0 auto; color: #fff">Se han subido {{numeroImagen }} de 3 <ion-icon name="images"></ion-icon></p>
+        </div>
+        <ion-row class="uploaded-images">
+          <ion-avatar *ngFor="let item of this.fotos; let index=index">
+            <img width="90px" height="90px" class="img-prod" [src]="item">
+          </ion-avatar>
+        </ion-row>
+        <hr />
+        <!--FOTOS-->
+        <input type="text" class="input" placeholder="Puede dejar un comentario adicional" formControlName="comentario" style="width: 90%;">
+        <!---->
+        <button type="submit" 
+          class="boton" style="margin-left: 16px; color: #fff;">
+          ENVIAR ENCUESTA
+        </button>
+      </form>
+
+
+      <ion-fab horizontal="end" vertical="top" slot="fixed">
+        <ion-fab-button color="light">
+          <ion-icon (click)="sacarFoto()" name="camera-outline"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+    </div>
+    </div>
+</ion-content>
+
+    <div *ngIf="this.spinner" class="div-spinner">
+    <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+  </div>

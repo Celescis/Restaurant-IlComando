@@ -1,0 +1,228 @@
+<ion-content [ngClass]="scanActivo?'scanner-activo':''">
+  <ion-header style="font-size: 1.4rem; text-align: center; background: #236f2d;    color:#fff;">DUEÑO / SUPERVISOR</ion-header>
+
+    <ion-fab
+    horizontal="start"
+    vertical="bottom"
+    slot="fixed"
+  >
+    <ion-fab-button (click)="irAMenuAltas()" style="border: 3px solid #00000000; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/atras.png" class="img-logout" alt="">
+    </ion-fab-button>
+  </ion-fab>
+  <img class="imagen_usuario" src="{{src_imagen}}" *ngIf="!scanActivo" />
+
+  <form [formGroup]="forma" (ngSubmit)="registrar()" *ngIf="!scanActivo">
+    <ion-slides pager="false" scrollbar="true">
+      <ion-slide>
+        <div>
+          <ion-icon
+            class="flecha-der heartbeat"
+            name="caret-forward-outline"
+            (click)="goToSlide2()"
+          ></ion-icon>
+          <h4 class="titulo" style="color: #ffffff; text-transform: uppercase;">Datos Personales</h4>
+          <!-- INPUT NOMBRE -->
+          <input
+            type="text"
+            formControlName="nombre"
+            class="input"
+            placeholder="Nombre"
+          />
+          <small
+            class="invalid"
+            *ngIf="forma.controls.nombre.errors?.required &&
+  forma.controls.nombre.touched"
+          >
+            El nombre es requerido
+          </small>
+          <!-- INPUT APELLIDO -->
+          <input
+            type="text"
+            formControlName="apellido"
+            class="input"
+            placeholder="Apellido"
+          />
+          <small
+            class="invalid"
+            *ngIf="forma.controls.apellido.errors?.required &&
+forma.controls.apellido.touched"
+          >
+            El apellido es requerido
+          </small>
+          <!-- INPUT DNI -->
+          <input
+            type="number"
+            formControlName="dni"
+            class="input"
+            placeholder="DNI"
+          />
+          <small
+            class="invalid"
+            *ngIf="forma.controls.dni.errors?.required &&
+    forma.controls.dni.touched"
+          >
+            El DNI es requerido
+          </small>
+          <small
+            class="invalid"
+            *ngIf="forma.controls.dni.errors?.pattern &&
+    forma.controls.dni.touched"
+          >
+            El DNI solo puede contener numeros
+          </small>
+          <!-- INPUT CUIL -->
+          <input
+            type="number"
+            formControlName="cuil"
+            class="input"
+            placeholder="CUIL"
+          />
+          <small
+            class="invalid"
+            *ngIf="forma.controls.cuil.errors?.required &&
+    forma.controls.cuil.touched"
+          >
+            El CUIL es requerido
+          </small>
+          <small
+            class="invalid"
+            *ngIf="forma.controls.cuil.errors?.pattern &&
+    forma.controls.cuil.touched"
+          >
+            El CUIL solo puede contener numeros
+          </small>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div style="height: 100%">
+          <ion-icon
+            class="flecha-izq heartbeat"
+            name="caret-back-outline"
+            (click)="goToSlide2()"
+          ></ion-icon>
+          <h4 class="titulo" style="color: #000;">Datos de Ingreso</h4>
+          <!-- INPUT PERFIL -->
+          <select class="input" formControlName="perfil" placeholder="Perfil">
+            <option value="">Seleccione el perfil...</option>
+            <option value="dueño">Dueño</option>
+            <option value="supervisor">Supervisor</option>
+          </select>
+          <small
+            class="invalid"
+            *ngIf="forma.controls.perfil.errors?.required &&
+  forma.controls.perfil.touched"
+          >
+            El Perfil es requerido
+          </small>
+          <div></div>
+          <!-- INPUT EMAIL -->
+          <input
+            type="text"
+            formControlName="email"
+            class="input"
+            placeholder="Correo Electrónico"
+          />
+          <small
+            class="invalid"
+            *ngIf="forma.controls.email.errors?.required &&
+  forma.controls.email.touched"
+          >
+            El Correo Electrónico es requerido
+          </small>
+          <div></div>
+          <!-- INPUT CONTRASEÑA 1-->
+          <input
+            type="password"
+            formControlName="contrasena1"
+            class="input"
+            placeholder="Contraseña"
+          />
+          <small
+            class="invalid"
+            *ngIf="forma.controls.contrasena1.errors?.required &&
+  forma.controls.contrasena1.touched"
+          >
+            La contraseña es requerida
+          </small>
+          <!-- INPUT CONTRASEÑA 2-->
+          <input
+            type="password"
+            formControlName="contrasena2"
+            class="input"
+            placeholder="Confirmar contraseña"
+          />
+          <small
+            class="invalid"
+            *ngIf="forma.controls.contrasena2.errors?.required &&
+  forma.controls.contrasena2.touched"
+          >
+            La contraseña es requerida
+          </small>
+          <small
+            class="invalid"
+            *ngIf="this.forma.get('contrasena1').value!=this.forma.get('contrasena2').value"
+          >
+            Las contraseñas deben coincidir
+          </small>
+        </div>
+      </ion-slide>
+    </ion-slides>
+
+    <button
+      type="button"
+      class="boton"
+      (click)="goToSlide()"
+      *ngIf="!forma.valid"
+    >
+      Continuar
+    </button>
+    <button
+      type="submit"
+      class="boton boton-registrar shake-horizontal"
+      [disabled]="forma.invalid"
+      *ngIf="forma.valid"
+    >
+      Registrar
+    </button>
+  </form>
+
+  <ion-fab
+    [ngClass]="faltaFoto?'shake-horizontal':''"
+    horizontal="end"
+    vertical="bottom"
+    slot="fixed"
+    *ngIf="!scanActivo"
+  >
+    <ion-fab-button color="danger">
+      <ion-icon name="attach-outline"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-list side="top">  
+      <ion-fab-button color="danger" (click)="sacarFoto()"
+        ><ion-icon name="camera-outline"></ion-icon
+      ></ion-fab-button>
+      <ion-fab-button color="danger" (click)="escanearDocumento()"
+        ><ion-icon name="qr-code-outline"></ion-icon
+      ></ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <!-- VISTA DEL ESCANER DE QR -->
+<div *ngIf="scanActivo">
+    <h3 class="scanH3">Escanear QR</h3>
+    <div class="scan">
+      <div class="qrcode"></div>
+      <div class="border"></div>
+    </div>
+    <br>
+    <br>
+    <div>
+      <button class="botonscan" (click)="pararScan()">Detener</button>
+    </div>
+  </div>
+</ion-content>
+
+    <div *ngIf="this.spinner" class="div-spinner">
+    <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+  </div>

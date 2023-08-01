@@ -1,0 +1,50 @@
+<ion-header style=" background-color: #236f2d;align-items: center;">
+  <h1 class="titulo" size="large">ENCUESTAS EMPLEADO</h1>
+</ion-header>
+<ion-content>
+
+
+  <ion-slides *ngIf="!spinner">
+    <ion-slide>
+      <div class="contenedor-charts">
+        <h4>¿Cómo fue el comportamiento de sus compañeros?</h4>
+
+        <canvas style="width: 50%;color: #fff;" id="chart3"></canvas>
+        <br>
+
+        <h4>¿Estaban bien acomodados los clientes?</h4>
+        <canvas id="chart2" style="color: #fff;"></canvas>
+      </div>
+
+    </ion-slide>
+
+    <ion-slide>
+      <div class="contenedor-charts">
+        <h4>Califique la condiciones en que se le otorgo su espacio</h4>
+        <canvas id="chart4" style="color: #fff;"></canvas>
+        <br>
+
+        <h4>¿Se entrego todo a tiempo?</h4>
+        <canvas style="color:rgb(255, 255, 255)" id="chart1"></canvas>
+      </div>
+
+    </ion-slide>
+
+    <ion-slide>
+      <div class="div_comentarios"></div>
+      <div class="div_card" *ngIf="this.listadoEncuestasEmpleados.lenght==0">
+        <h5 style="margin-top: 0%; color: #fff;"><b>No hubo comentarios</b></h5>
+      </div>
+      <div class="div_card" *ngFor="let respuesta of this.listadoEncuestasEmpleados">
+        <h5 style="margin-top: 0%; color: #fff;"><b>{{respuesta.empleado.apellido + ", " +
+            respuesta.empleado.nombre}}</b></h5>
+        <b>{{respuesta.comentario}}</b>
+      </div>
+    </ion-slide>
+  </ion-slides>
+
+</ion-content>
+
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

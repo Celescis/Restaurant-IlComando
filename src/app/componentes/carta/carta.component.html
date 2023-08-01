@@ -1,0 +1,95 @@
+<div *ngIf="MostrarMenu">
+  <div style="position: sticky; top: 10%; background-color: antiquewhite; z-index: 10000000000000000000;">
+    <h1 style="margin: 0 auto; text-align: center;color: #000000;margin-top: 20%; background-color: antiquewhite;">IMPORTE ACUMULADO: {{total}}</h1>
+  </div>
+
+  <div>
+    <div *ngFor="let producto of listadoProductos" class="producto-container">
+      <div>
+        <h3 style="font-weight: bolder;">{{ producto.nombre }}</h3>
+      </div>
+      <div class="producto-imagen">
+        <ion-slides>
+          <ion-slide *ngFor="let foto of producto.fotos" class="slides_img">
+            <img class="img-producto" [src]="foto">
+          </ion-slide>
+        </ion-slides>
+      </div>
+
+      <div class="producto-info">
+        <h3><b>Precio: ${{ producto.precio }}</b></h3>
+        <h3><b>{{ producto.descripcion }}</b></h3>
+      </div>
+
+      <div class="div_botones">
+        <button class="boton boton-sacar" (click)="quitarDelPedido(producto)">
+          <img style="width: 40px;" src="../../../assets/minus.png">
+        </button>
+        <button class="boton boton-agregar" (click)="agregarAlPedido(producto)">
+          <img style="width: 40px;" src="../../../assets/mas.png">
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+</div>
+
+
+<div *ngIf="MostrarPedido">
+  <h1>Mi Pedido</h1>
+  <div class="card_producto">
+    <table class="table" style="color: #ffffff;">
+      <caption style="color: #ffffff; font-weight: bolder;">
+        <img src="/assets/icon.png" alt="Imagen de título" style="width: 50px; height: 50px;">
+        RESUMEN DEL PEDIDO
+      </caption>
+      <thead>
+        <tr>
+          <th>PRODUCTO</th>
+          <th>CANTIDAD</th>
+          <th>PRECIO</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let producto of agruparProductos(pedido)">
+          <tr>
+            <td>{{producto.nombre}}</td>
+            <td *ngIf="producto.cantidad > 1">{{producto.cantidad}}</td>
+            <td *ngIf="producto.cantidad === 1">1</td>
+            <td>${{producto.precio * producto.cantidad}}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3" style="font-size: 25; font-weight: bolder;">TOTAL: ${{total}}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="div_ver_pedido">
+    <button class="boton boton_pedido" (click)="hacerPedido()">
+      Finalizar pedido
+      <img src="/assets/cheque.png" alt="" class="imagen-pedido">
+    </button>
+  </div>
+</div>
+
+
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>
+
+<div class="fixed">
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button color="light" *ngIf="total == 0" [disabled]="true">
+      <img src="/assets/pedido-en-linea.png" alt="">
+    </ion-fab-button>
+    <ion-fab-button color="light" *ngIf="total != 0" (click)="verPedido()">
+      <img src="/assets/pedido-en-linea.png" alt="">
+    </ion-fab-button>
+  </ion-fab>
+</div>

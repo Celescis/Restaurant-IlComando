@@ -1,0 +1,143 @@
+<ion-header [ngClass]="scanActivo?'scanner-activo':''">
+  <nav class="navbar navbar-expand-lg " style="background-color: #236f2d;">
+    <span class="navbar-text ml-auto text-right" *ngIf="usuarioLogueado"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{usuarioLogueado.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{usuarioLogueado.nombre}}
+    </span>
+    <br>
+    <span class="navbar-text ml-auto text-right" *ngIf="auth.usuarioAnonimo"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{auth.usuarioAnonimo.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{auth.usuarioAnonimo.nombre}}
+    </span>
+  </nav>
+
+  <!--NAVBAR SIDE-->
+  <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''" style="z-index: 10000;"
+    *ngIf="!this.scanActivo && !MostrarJuego && !MostrarJuego15 && !MostrarJuego20">
+    <div class="logo-container">
+      <button class="logo" (click)="toggleCollapse()"> <img src="assets/icon.png"
+          style="height: 40px;width: 50px; margin-right: 0px;margin-top: 2px;"></button>
+      <div class="logo-text" *ngIf="collapsed">Il Comando</div>
+      <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()"><i
+          class="fal fa-times close-icon"></i></button>
+    </div>
+    <ul class="sidenav-nav" *ngIf="usuarioLogueado || auth.usuarioAnonimo">
+      <li class="sidenav-nav-item"
+        *ngIf="(pedido.estado !== 'pagado' && pedido.estado !== 'esperando') && (SinElegir || scannerCorrecto)">
+        <h3 class="sidenav-nav-link" (click)="consultarMozo()">
+          <ion-icon name="chatbubbles" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Consultar al mozo</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item" *ngIf="(pedido.estado === 'no iniciado' ) && !yaHayPedido && (SinElegir || scannerCorrecto)">
+        <h3 class="sidenav-nav-link" (click)="verMenu()">
+          <ion-icon name="restaurant" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Ver el menú</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item"
+        *ngIf="(pedido.estado == 'aceptado' || pedido.estado == 'entregado' || pedido.estado =='cocinado') &&  pedido.estado !== 'pagado' && !pedido.jugo && (SinElegir || scannerCorrecto)">
+        <h3 class="sidenav-nav-link" (click)="Jugar()">
+          <img src="/assets/juego-del-ahorcado.png" alt="" class="sidenav-link-icon">
+          <span class="sidenav-link-text" *ngIf="collapsed">Juega por descuento del 10%</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item"
+        *ngIf="(pedido.estado == 'aceptado' || pedido.estado == 'entregado' || pedido.estado =='cocinado' ) &&  pedido.estado !== 'pagado' && !pedido.jugo && (SinElegir || scannerCorrecto)">
+        <h3 class="sidenav-nav-link" (click)="Jugar15()">
+          <img src="/assets/juegos-de-cartas.png" alt="" class="sidenav-link-icon">
+          <span class="sidenav-link-text" *ngIf="collapsed">Juega por descuento del 15%</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item"
+        *ngIf="(pedido.estado == 'aceptado' || pedido.estado == 'entregado' || pedido.estado =='cocinado')  &&  pedido.estado !== 'pagado' && !pedido.jugo && (SinElegir || scannerCorrecto)">
+        <h3 class="sidenav-nav-link" (click)="Jugar20()">
+          <img src="/assets/buscaminas.jpg" alt="" class="sidenav-link-icon">
+          <span class="sidenav-link-text" *ngIf="collapsed">Juega por descuento del 20%</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item" *ngIf="MostrarJuego || MostrarJuego15 || MostrarJuego20 || MostrarMenu">
+        <h3 class="sidenav-nav-link" (click)="volver()">
+          <ion-icon name="arrow-back-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Volver</span>
+        </h3>
+      </li>
+    </ul>
+  </div>
+</ion-header>
+
+<ion-content [ngClass]="scanActivo?'scanner-activo':''">
+
+  <div class="card_producto" *ngIf="(pedido.estado === 'no iniciado') && (SinElegir || scannerCorrecto) && !yaHayPedido" style="display: flex; flex-direction: column; justify-content: center; align-items: center;">
+    <img src="/assets/img/pizza.png" alt="">
+    <span style="color: #fff;">
+      <b style="text-transform: uppercase;">Estimado cliente,</b> <br><br>
+      Le invitamos a realizar su pedido tocando <ion-icon name="restaurant"></ion-icon> en la <b>barra de navegación</b>, en caso de que necesite ayuda puede solicitarla por el chat y un mozo se comunicará.<br><br>
+      <b style="color: rgb(255, 170, 170); text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); font-size: large;"><b style="text-transform: uppercase;"> Disfrute</b> nuestras delicias! </b>
+    </span>
+  </div>
+  
+  <!-- Vista cuando es scaneado -->
+  <div style="height: 100%; width: 100%;" *ngIf="(yaHayPedido && (SinElegir || scannerCorrecto)) || (!yaHayPedido &&(SinElegir || scannerCorrecto))">
+
+    <button class="boton" style="height:70%"
+      *ngIf="pedido.estado === 'aceptado' || pedido.estado === 'no aceptado' || pedido.estado === 'cocinado'"
+      (click)="consultarPedido()">Consultar estado del pedido</button>
+
+    <button class="boton" style="height:70%" *ngIf="pedido.estado === 'entregado'" (click)="LlegoComida()">Confirmar
+      recepción del pedido</button>
+
+    <button *ngIf="pedido.estado === 'esperando'" class="boton" style="height:70%">Espere a que el mozo confirme el
+      pago</button>
+
+    <button class="boton" style="height:70%" *ngIf="pedido.estado === 'pagado'" (click)="verEncuesta()">Encuesta de
+      satisfacción</button>
+
+    <button class="boton" style="height:70%" *ngIf="pedido.estado === 'confirmado'" (click)="Pagar()">Pagar</button>
+  </div>
+
+  <!-- MENU -->
+  <div style="height: 100%; width: 100%;" *ngIf="MostrarMenu && !yaHayPedido">
+    <app-carta [numeroMesa]="numeroMesa" (pedidoFinal)="recibirPedido($event)"></app-carta>
+  </div>
+
+  <div style="height: 100%; width: 100%;" *ngIf="MostrarPagar">
+    <app-home-pagar-cuenta [pedido]="pedido" (pago)="pago()"></app-home-pagar-cuenta>
+  </div>
+
+  <div style="height: 100%; width: 100%;" *ngIf="MostrarJuego">
+    <app-juego-diez-de-descuento [pedidoRecibido]="pedido"
+      (PasamosPedidoConJuego)="terminarJuego($event)"></app-juego-diez-de-descuento>
+  </div>
+
+  <div style="height: 100%; width: 100%;" *ngIf="MostrarJuego15">
+    <app-juego-quince-de-descuento [pedidoRecibido]="pedido"
+      (PasamosPedidoConJuego)="terminarJuego15($event)"></app-juego-quince-de-descuento>
+  </div>
+
+  <div style="height: 100%; width: 100%;" *ngIf="MostrarJuego20">
+    <app-juego-veinte-de-descuento [pedidoRecibido]="pedido"
+      (PasamosPedidoConJuego)="terminarJuego20($event)"></app-juego-veinte-de-descuento>
+  </div>
+
+  <ion-fab *ngIf="MostrarJuego || MostrarJuego15 || MostrarJuego20" (click)="volver()" horizontal="start"
+    vertical="bottom">
+    <ion-fab-button color="warning">
+      <img src="/assets/atras.png" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab (click)="cerrarSesion()" horizontal="end" vertical="bottom" slot="fixed" *ngIf="MostrarJuego || MostrarJuego15 || MostrarJuego20 || (!MostrarMenu && !MostrarPagar && SinElegir)">
+    <ion-fab-button color="danger" style="border: 3px solid #ffff; border-radius: 50%; overflow: hidden;">
+      <img src="/assets/cerrar-sesion.png" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+
+
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

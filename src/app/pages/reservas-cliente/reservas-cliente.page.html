@@ -1,0 +1,80 @@
+
+<ion-header style="font-size: 1.4rem; text-align: center; background: #236f2d; color: #fff;">RESERVAR</ion-header>
+
+<ion-content>
+
+  <div class="card_producto">
+    <ion-item>
+      <ion-label>Mesa:</ion-label>
+      <ion-select [(ngModel)]="mesaSeleccionada" (ionChange)="onMesaChange()">
+        <ion-select-option *ngFor="let mesa of mesasDisponibles | async" [value]="mesa.id">{{ mesa.numero }} - {{ mesa.tipo }}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Fecha:</ion-label>
+      <ion-input type="date" [(ngModel)]="date"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label>Hora:</ion-label>
+      <ion-input type="time" [(ngModel)]="time"></ion-input>
+    </ion-item>
+  
+    <button (click)="makeReservation()" class="boton boton_mesa">HACER RESERVA</button>
+  </div>
+  <hr>
+
+  <div *ngIf="(reservasCliente$ | async)?.length == 0" class="card_producto">
+    <h2 style="text-align: center; font-weight: bolder; color: #ffffff;">Aún no se ha realizado ninguna reserva</h2>
+  </div>
+
+
+  <div *ngIf="this.reservasCliente.length==0" class="card_producto">
+    <h2 style="text-align: center; font-weight: bolder; color: #ffffff;">Aún no se ha realizado ninguna reserva</h2>
+  </div>
+  <div class="card_producto" *ngIf="this.reservasCliente.length>0">
+    <h2 style="text-align: center; font-weight: bolder; color: #ffffff;">MI RESERVA</h2>
+    <ion-item *ngFor="let reserva of reservasCliente">
+      <ion-grid>
+        <ion-row>
+          <ion-col>
+            <ion-label>Fecha:</ion-label>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{ reserva.dia }}</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-label>Horario:</ion-label>
+          </ion-col>
+          <ion-col>
+            <ion-label>{{ reserva.horario }}hs</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <ion-label>Estado:</ion-label>
+          </ion-col>
+          <ion-col>
+            <ion-label *ngIf="reserva.aprobada">Aprobada</ion-label>
+            <ion-label *ngIf="!reserva.aprobada">No aprobada</ion-label>
+          </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+            <button (click)="cancelarReserva(reserva)" class="boton boton_mesa" style="background-color: rgb(255, 0, 0);">CANCELAR RESERVA</button>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </ion-item>
+  </div>
+
+  <ion-fab [routerLink]="'/home-principal-de-cliente'" horizontal="start" vertical="bottom" slot="fixed">
+    <ion-fab-button color="dark">
+      <img src="/assets/atras.png" alt="">
+    </ion-fab-button>
+  </ion-fab>
+  
+</ion-content>

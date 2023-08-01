@@ -1,0 +1,407 @@
+<ion-content>
+  <div *ngIf="!clienteActivo && !empleadoActivo">
+    <ion-header style="text-align: center; font-size: 1.5rem; background: #236f2d;     color:#fff;"
+      *ngIf="!encuestaCliente && !encuestaEmpleado">
+      ENCUESTAS
+    </ion-header>
+    <ion-header
+      style="text-align: center; font-size: 1.5rem; background: #236f2d; color:#fff;"
+      *ngIf="encuestaCliente">
+      CLIENTES
+    </ion-header>
+    <ion-header
+      style="text-align: center; font-size: 1.5rem; background: #236f2d;color:#fff;"
+      *ngIf="encuestaEmpleado">
+      EMPLEADOS
+    </ion-header>
+  </div>
+  <ion-header style="text-align: center; font-size: 1.5rem ; background: #236f2d; color:#fff;" *ngIf="clienteActivo">
+    {{clienteActivo.apellido}} {{clienteActivo.nombre}}
+  </ion-header>
+  <ion-header style="text-align: center; font-size: 1.5rem; color:#fff;background: #236f2d;" *ngIf="empleadoActivo">
+    {{empleadoActivo.apellido}} {{empleadoActivo.nombre}}
+  </ion-header>
+
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" (click)="cerrarSesion()">
+    <ion-fab-button style="border: 3px solid #ffffff; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/cerrar-sesion.png" class="img-logout" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+
+  <!-- BOTON HACIA EL MENU DE SELECCION DE CLIENTES O EMPLEADOS -->
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed"
+    *ngIf="encuestaCliente && !clienteActivo || encuestaEmpleado && !empleadoActivo">
+    <ion-fab-button (click)="irAMenuEncuestas()"
+      style="border: 3px solid #00000000; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/atras.png" class="img-logout" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- BOTON DE RETORNO AL LISTADO DE CLIENTES -->
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed" *ngIf="encuestaCliente && clienteActivo">
+    <ion-fab-button color="dark" (click)="irAListadoClientes()"
+      style="border: 3px solid #00000000; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/atras.png" class="img-logout" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- BOTON DE RETORNO AL LISTADO DE EMPLEADOS -->
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed" *ngIf="encuestaEmpleado && empleadoActivo">
+    <ion-fab-button (click)="irAListadoEmpleados()"
+      style="border: 3px solid #00000000; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/atras.png" class="img-logout" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- MENU SELECCION DE LISTADO CLIENTES O EMPLEADOS -->
+  <div *ngIf="!encuestaCliente && !encuestaEmpleado">
+    <!-- BOTON DE RETORNO AL HOME DEL SUPERVISOR -->
+    <ion-fab horizontal="start" vertical="bottom" slot="fixed">
+      <ion-fab-button (click)="irAHomeSupervisor()"
+        style="border: 3px solid #00000000; border-radius: 50%; overflow: hidden;">
+        <img src="./../../../assets/atras.png" class="img-logout" alt="">
+      </ion-fab-button>
+    </ion-fab>
+    <button type="button" class="boton" (click)="irAEncuestaCliente()" style="  border: 2px solid #fff;">
+      CLIENTES<img src="../../../assets/cliente.png" alt="cliente" />
+    </button>
+    <button type="button" class="boton" (click)="irAEncuestaEmpleado()" style="  border: 2px solid #fff;">
+      EMPLEADOS <img src="../../../assets/camarero.png" alt="empleado" />
+    </button>
+  </div>
+
+  <!-- LISTADO CLIENTES -->
+  <div *ngIf="encuestaCliente && !clienteActivo">
+    <ion-card style="
+        border: 3px solid #fff;
+        border-radius: 10px;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 2px 2px 4px #000;
+      " class="tarjeta-usuario" *ngFor="let item of listadoClientes;">
+      <img style="
+          display: block;
+          width: 8rem;
+          height: 8rem;
+          object-fit: cover;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 1rem;
+          border-radius: 50%;
+          border: 2px solid #fff;
+          box-shadow: 2px 2px 4px #000;
+        " src="{{item.foto}}" />
+      <ion-card-header>
+        <ion-card-title style="text-align: center; color: #fff; text-shadow: 1px 1px #000">{{item.apellido}}
+          {{item.nombre}}</ion-card-title>
+        <button class="boton" (click)="mostrarEncuestaCliente(item)" style="background-color: #0b6819 !important;">
+          Encuesta
+        </button>
+      </ion-card-header>
+      <div class="btn-estadisticas " (click)="generarChartsCliente(item)">
+        <ion-icon name="bar-chart"></ion-icon>
+      </div>
+    </ion-card>
+  </div>
+
+<!-- FORM ENCUESTA CLIENTES -->
+<div *ngIf="clienteActivo && !vistasChartsCliente" style="color: #fff;">
+  <form [formGroup]="forma" (ngSubmit)="crearEncuestaCliente()"
+    style="background-color: #0b681991; border: 3px solid #fff; margin-top: 50px;">
+    <!-- INPUT HUMOR -->
+    <h4 class="mb-3">¿Tuvo buen comportamiento?</h4>
+    <ion-icon style="font-size: 1.5rem" name="sad-outline"></ion-icon>
+    <input style="width: 70%; margin-left: 0.5rem; margin-right: 0.5rem" type="range" formControlName="humor" min="0"
+      max="10" />
+    <ion-icon style="font-size: 1.5rem" name="happy-outline"></ion-icon>
+    <small style="display: flex; justify-content: space-between"><span style="margin-left: 5%">No</span><span
+        style="margin-left: 5%">Más o Menos</span><span style="margin-right: 2%">Si</span></small>
+    <!-- INPUT FRECUENCIA -->
+    <div class="radio">
+      <h4 class="mb-3">¿Pide postre?</h4>
+      <div class="form-check">
+        <input value="0" formControlName="frecuencia" type="radio" class="form-check-input" id="aMenudo" />
+        <label for="aMenudo" class="form-check-label">No</label>
+      </div>
+
+      <div class="form-check">
+        <input value="1" formControlName="frecuencia" type="radio" class="form-check-input" checked required
+          id="unaSemana" />
+        <label for="unaSemana" class="form-check-label">Poco</label>
+      </div>
+
+      <div class="form-check">
+        <input value="2" type="radio" formControlName="frecuencia" class="form-check-input" required id="masDeUna" />
+        <label for="masDeUna" class="form-check-label">Mucho</label>
+      </div>
+    </div>
+    <!-- INPUT USA LA APLICACION -->
+    <div>
+      <h4 class="mb-3">¿Deja propina a menudo?</h4>
+      <select class="form-select-input select" formControlName="usaAplicacion">
+        <option value="">Elija una opción...</option>
+        <option value="si">Si</option>
+        <option value="no">No</option>
+      </select>
+      <br />
+    </div>
+    <!-- INPUT PIDE DELIVERY -->
+    <h4 class="mb-3">¿Tarda mucho en irse?</h4>
+    <div class="checkbox" style="display: flex; justify-content: space-evenly">
+      <div>
+        <label for="deliverySi" style="font-size: 1.5rem">
+          <input (change)="seleccionarDeliverySi()" type="checkbox" id="deliverySi" formControlName="deliverySi"
+            value="si" checked />
+          Si</label>
+      </div>
+      <div>
+        <label for="deliveryNo" style="font-size: 1.5rem">
+          <input (change)="seleccionarDeliveryNo()" type="checkbox" id="deliveryNo" formControlName="deliveryNo"
+            value="no" />
+          No</label>
+      </div>
+    </div>
+    <!-- INPUT DETALLE SOBRE EL CLIENTE -->
+    <input type="text" class="input" placeholder="Detalles sobre el cliente..." formControlName="detalle" />
+
+    <button type="submit" [ngClass]="forma.valid?'boton-registrar shake-horizontal':''" class="boton"
+      style="margin-top: 20px; margin-bottom: 30px; ">
+      Registrar
+    </button>
+  </form>
+</div>
+
+
+  <!-- VISTA DE CHARTS CLIENTES -->
+  <div class="contenedor-charts" *ngIf="vistasChartsCliente"
+    style="background-color: #0b681991; border: 3px solid #fff; margin-top: 50px; color: #fff;">
+    <img style="
+        display: block;
+        width: 8rem;
+        height: 8rem;
+        object-fit: cover;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        box-shadow: 2px 2px 4px #000;
+      " src="{{clienteActivo.foto}}" />
+    <h2 style="color: #fff;">ESTADÍSTICAS</h2>
+    <ion-slides pager="true" scrollbar="true" *ngIf="clienteTieneAlgunaEncuesta">
+      <ion-slide>
+        <div style="margin-top: 3rem">
+          <ion-icon class="flecha-der " name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <h4 style="font-size: 1.5rem" *ngIf="!spinner">Buen comportamiento</h4>
+          <canvas id="chartCliente1"></canvas>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div style="margin-top: 3rem">
+          <ion-icon class="flecha-der " name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <ion-icon class="flecha-izq " name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4 style="font-size: 1.5rem" *ngIf="!spinner">
+            Pedido de postres
+          </h4>
+          <canvas id="chartCliente2"></canvas>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div style="margin-top: 3rem">
+          <ion-icon class="flecha-der " name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <ion-icon class="flecha-izq " name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4 style="font-size: 1.5rem" *ngIf="!spinner">
+            Propina
+          </h4>
+          <canvas id="chartCliente3"></canvas>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div style="margin-top: 3rem">
+          <ion-icon class="flecha-izq" name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4 style="font-size: 1.5rem" *ngIf="!spinner">¿Tarda en irse del local?</h4>
+          <div style="height: 300px; width: 100%">
+            <canvas id="chartCliente4"></canvas>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slides>
+    <img *ngIf="!clienteTieneAlgunaEncuesta" src="/assets/grafico.png" alt="" style="height: 200px;width: 200px;" />
+    <h4 *ngIf="!clienteTieneAlgunaEncuesta" style="margin-top: 2rem; text-align: center; color: #fff;">
+      Aún no hay estadísticas disponibles
+    </h4>
+  </div>
+
+  <!-- LISTADO EMPLEADOS -->
+  <div *ngIf="encuestaEmpleado && !empleadoActivo">
+    <ion-card style="
+        border: 3px solid #fff;
+        border-radius: 10px;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 2px 2px 4px #000;
+      " class="tarjeta-usuario" *ngFor="let item of listadoEmpleados;">
+      <img style="
+          display: block;
+          width: 8rem;
+          height: 8rem;
+          object-fit: cover;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 1rem;
+          border-radius: 50%;
+          border: 2px solid #fff;
+          box-shadow: 2px 2px 4px #000;
+        " src="{{item.foto}}" />
+      <ion-card-header style="color: #fff;">
+        <ion-card-title style="text-align: center; color: #fff; text-shadow: 1px 1px #000">{{item.apellido}}
+          {{item.nombre}}</ion-card-title>
+        <button class="boton" (click)="mostrarEncuestaEmpleado(item)" style="background-color: #0b6819 !important;">
+          Encuesta
+        </button>
+      </ion-card-header>
+      <div class="btn-estadisticas" (click)="generarChartsEmpleado(item)">
+        <ion-icon name="bar-chart"></ion-icon>
+      </div>
+    </ion-card>
+  </div>
+
+<!-- FORM ENCUESTA EMPLEADOS -->
+<div *ngIf="empleadoActivo && !vistasChartsEmpleado"
+  style="background-color: #0b681991; border: 3px solid #fff; margin-top: 50px; color: #fff;">
+  <form [formGroup]="formaEmpleado" (ngSubmit)="crearEncuestaEmpleado()">
+    <!-- INPUT EFICIENCIA -->
+    <h4 class="mb-3">Trato con compañeros</h4>
+    <ion-icon style="font-size: 1.5rem" name="sad-outline"></ion-icon>
+    <input style="width: 70%; margin-left: 0.5rem; margin-right: 0.5rem" type="range" formControlName="eficiencia"
+      min="0" max="10" />
+    <ion-icon style="font-size: 1.5rem" name="happy-outline"></ion-icon>
+    <small style="display: flex; justify-content: space-between"><span style="margin-left: 5%">Malo</span><span
+        style="margin-left: 5%">Bueno</span><span style="margin-right: 2%">Excelente</span></small>
+
+    <!-- INPUT FRECUENCIA INASISTENCIA -->
+    <h4 class="mb-3">Habilidades</h4>
+    <div class="radio">
+      <div class="form-check">
+        <input value="0" formControlName="inasistencia" type="radio" class="form-check-input" id="nunca" />
+        <label for="nunca" class="form-check-label">Muy malas</label>
+      </div>
+
+      <div class="form-check">
+        <input value="1" formControlName="inasistencia" type="radio" class="form-check-input" checked required
+          id="poco" />
+        <label for="poco" class="form-check-label">Buenas</label>
+      </div>
+
+      <div class="form-check">
+        <input value="2" type="radio" formControlName="inasistencia" class="form-check-input" required id="mucho" />
+        <label for="mucho" class="form-check-label">Excelentes</label>
+      </div>
+    </div>
+
+    <!-- INPUT COMPAÑERO -->
+    <div>
+      <h4 class="mb-3">¿Es colaborador?</h4>
+      <select class="form-select-input select" formControlName="esCompanero">
+        <option value="">Elija una opción...</option>
+        <option value="si">Si</option>
+        <option value="no">No</option>
+      </select>
+      <br />
+    </div>
+
+    <!-- INPUT ES LIMPIO -->
+    <h4 class="mb-3">¿Tiene compromiso?</h4>
+    <div class="checkbox" style="display: flex; justify-content: space-evenly">
+      <div>
+        <label for="deliverySi" style="font-size: 1.5rem">
+          <input (change)="seleccionarDeliverySi()" type="checkbox" id="deliverySi" formControlName="deliverySi"
+            value="si" checked />
+          Si</label>
+      </div>
+      <div>
+        <label for="deliveryNo" style="font-size: 1.5rem">
+          <input (change)="seleccionarDeliveryNo()" type="checkbox" id="deliveryNo" formControlName="deliveryNo"
+            value="no" />
+          No</label>
+      </div>
+    </div>
+
+    <!-- INPUT DETALLE SOBRE EL EMPLEADO -->
+    <input type="text" class="input" placeholder="Detalles sobre el empleado..." formControlName="detalle" />
+
+    <button type="submit" [ngClass]="formaEmpleado.valid?'boton-registrar shake-horizontal':''" class="boton">
+      Registrar
+    </button>
+  </form>
+</div>
+
+
+  <!-- VISTA DE CHARTS EMPLEADOS -->
+  <div class="contenedor-charts" *ngIf="vistasChartsEmpleado"
+    style="background-color: #0b681991; border: 3px solid #fff; margin-top: 50px; color: #fff;">
+    <img style="
+        display: block;
+        width: 8rem;
+        height: 8rem;
+        object-fit: cover;
+        margin-left: auto;
+        margin-right: auto;
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        box-shadow: 2px 2px 4px #000;
+      " src="{{empleadoActivo.foto}}" />
+    <h2 style="color: #fff;">ESTADÍSTICAS</h2>
+
+    <ion-slides pager="true" scrollbar="true" *ngIf="empleadoTieneAlgunaEncuesta">
+      <ion-slide>
+        <div style="margin-top: 3rem">
+          <ion-icon class="flecha-der " name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <h4 style="font-size: 1.5rem" *ngIf="!spinner">Trato con compañeros</h4>
+          <canvas id="chartEmpleado1"></canvas>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div style="margin-top: 3rem">
+          <ion-icon class="flecha-der " name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <ion-icon class="flecha-izq " name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4 style="font-size: 1.5rem" *ngIf="!spinner">
+           Habilidades
+          </h4>
+          <canvas id="chartEmpleado2"></canvas>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div style="margin-top: 3rem">
+          <ion-icon class="flecha-der " name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <ion-icon class="flecha-izq " name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4 style="font-size: 1.5rem" *ngIf="!spinner">Colaboración</h4>
+          <canvas id="chartEmpleado3"></canvas>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div style="margin-top: 3rem">
+          <ion-icon class="flecha-izq " name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4 style="font-size: 1.5rem" *ngIf="!spinner">Compromiso</h4>
+          <div style="height: 300px; width: 100%">
+            <canvas id="chartEmpleado4"></canvas>
+          </div>
+        </div>
+      </ion-slide>
+    </ion-slides>
+
+    <img *ngIf="!empleadoTieneAlgunaEncuesta" src="/assets/grafico.png" alt="" style="height: 200px;width: 200px;" />
+    <h4 *ngIf="!empleadoTieneAlgunaEncuesta" style="margin-top: 2rem; text-align: center; color: #fff;">
+     Aún no hay estadísticas disponibles
+    </h4>
+  </div>
+</ion-content>
+
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

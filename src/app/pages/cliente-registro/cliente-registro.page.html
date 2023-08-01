@@ -1,0 +1,141 @@
+<ion-content [ngClass]="scanActivo?'scanner-activo':''">
+
+  <ion-header class="transparent-header" *ngIf="!scanActivo">
+    <ion-segment color="danger" class="segment">
+      <ion-segment-button [routerLink]="['/login']" style="color:rgb(255, 255, 255); font-weight: 600;">
+        Iniciar Sesión
+      </ion-segment-button>
+      <ion-segment-button [routerLink]="['/cliente-registro']" style="color:rgb(255, 255, 255); font-weight: 600;">
+        Registro
+      </ion-segment-button>
+    </ion-segment>
+  </ion-header>
+
+  <img class="imagen_usuario" src="{{src_imagen}}" *ngIf="!scanActivo">
+  <form [formGroup]="formularioAlta" (ngSubmit)="registrar()" *ngIf="!scanActivo">
+    <h4 class="titulo" style="color: #ffffff; text-transform: uppercase;">Datos Personales</h4>
+    <select [(ngModel)]="cliente.tipo" class="input" formControlName="tipo" placeholder="Tipo">
+      <option value="registrado">Nuevo cliente</option>
+      <option value="anonimo">Anónimo</option>
+    </select>
+    <small class="invalid" *ngIf="formularioAlta.controls.tipo.errors?.required &&
+formularioAlta.controls.tipo.touched">
+      El tipo es requerido
+    </small>
+
+    <!---ANONIMO-->
+    <div *ngIf="this.cliente.tipo == 'anonimo'">
+      <input type="text" formControlName="nombre" class="input" placeholder="Nombre" />
+      <small class="invalid" *ngIf="formularioAlta.controls.nombre.errors?.required &&
+  formularioAlta.controls.nombre.touched">
+        El nombre es requerido
+      </small>
+      <button type="submit" class="boton shake-horizontal" style="font-size:19px; border-radius: 20px; height: 60px; width: 300px;" fill="solid">
+        Registrar</button>
+    </div>
+    <!--FIN ANONIMO-->
+
+
+
+    <!--REGISTRADO-->
+    <div *ngIf="this.cliente.tipo === 'registrado'">
+      <ion-slides pager="false" scrollbar="true">
+        <ion-slide>
+          <div>
+            <ion-icon class="flecha-der heartbeat" name="caret-forward-outline" (click)="goToSlide2()"></ion-icon>
+            <input type="text" formControlName="nombre" class="input" placeholder="Nombre" />
+            <small class="invalid" *ngIf="formularioAlta.controls.nombre.errors?.required &&
+            formularioAlta.controls.nombre.touched">
+              El nombre es requerido
+            </small>
+            <input type="text" formControlName="apellido" class="input" placeholder="Apellido" />
+            <small class="invalid" *ngIf="formularioAlta.controls.apellido.errors?.required &&
+formularioAlta.controls.apellido.touched">
+              El apellido es requerido
+            </small>
+            <input type="number" formControlName="dni" class="input" placeholder="DNI" />
+            <small class="invalid" *ngIf="formularioAlta.controls.dni.errors?.required &&
+    formularioAlta.controls.dni.touched">
+              El DNI es requerido
+            </small>
+            <small class="invalid" *ngIf="formularioAlta.controls.dni.errors?.pattern &&
+    formularioAlta.controls.dni.touched">
+              El DNI solo puede contener numeros
+            </small>
+          </div>
+        </ion-slide>
+        <ion-slide>
+          <div style="height: 100%">
+            <ion-icon class="flecha-izq heartbeat" name="caret-back-outline" (click)="goToSlide2()"></ion-icon>
+            <input type="text" formControlName="email" class="input" placeholder="Correo electrónico" />
+            <small class="invalid" *ngIf="formularioAlta.controls.email.errors?.required &&
+  formularioAlta.controls.email.touched">
+              El correo electrónico es requerido
+            </small>
+            <small class="invalid" *ngIf="formularioAlta.controls.email.errors?.email &&
+            formularioAlta.controls.email.touched">
+              El correo electrónico no tiene un formato valido
+            </small>
+            <input type="password" formControlName="contrasena" class="input" placeholder="Contraseña" />
+            <small class="invalid" *ngIf="formularioAlta.controls.contrasena.errors?.required &&
+  formularioAlta.controls.contrasena.touched">
+              La contraseña es requerida
+            </small>
+            <input type="password" formControlName="repetirContrasena" class="input"
+              placeholder="Confirmar contraseña" />
+            <small class="invalid" *ngIf="formularioAlta.controls.repetirContrasena.errors?.required &&
+  formularioAlta.controls.repetirContrasena.touched">
+              Confirme la contraseña
+            </small>
+          </div>
+        </ion-slide>
+      </ion-slides>
+
+      <ion-card-content style="  font-size: 16px;">
+               <button class="boton"  fill="solid" 
+            (click)="goToSlide()" *ngIf="!formularioAlta.valid">
+            Continuar</button>
+          <button type="submit" class="boton shake-horizontal" fill="solid"
+            [disabled]="formularioAlta.invalid" *ngIf="formularioAlta.valid">
+            Registrar</button>
+      </ion-card-content>
+    </div>
+    <!--FIN REGISTRADO-->
+
+
+
+  </form>
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" *ngIf="!scanActivo">
+    <ion-fab-button color="danger" >
+      <ion-icon name="attach-outline"></ion-icon>
+    </ion-fab-button>
+
+    <ion-fab-list side="top">
+      <ion-fab-button color="danger" (click)="sacarFoto()">
+        <ion-icon name="camera-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button *ngIf="this.cliente.tipo === 'registrado'" color="danger" (click)="escanearDocumento()">
+        <ion-icon name="qr-code-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+
+<div *ngIf="scanActivo">
+    <h3 class="scanH3">Escanear QR</h3>
+    <div class="scan">
+      <div class="qrcode"></div>
+      <div class="border"></div>
+    </div>
+    <br>
+    <br>
+    <div>
+      <button class="botonscan" (click)="pararScan()">Detener</button>
+    </div>
+  </div>
+</ion-content>
+
+  <div *ngIf="this.spinner" class="div-spinner">
+    <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+  </div>

@@ -1,0 +1,37 @@
+ion-content {
+    --background: url('/assets/background.svg');
+    align-items: center;
+    align-content: center;
+    text-align: center;
+}
+
+.card_producto {
+    background-color: #236f2d;
+    margin: 5%;
+    padding: 3%;
+    text-align: center;
+    border: 10px double #fff;
+    margin-top: 50px;
+    width: 90%;
+    align-items: center;
+}
+
+.boton {
+    margin-top: 5%;
+    border: 2px solid #fff;
+    background-color: #17a546;
+    color: #fff;
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 2px;
+}
+
+.boton_mesa {
+    font-family: Dosis;
+    border-radius: 30px;
+    font-weight: 700;
+    font-size: 100%;
+    width: 100%;
+}

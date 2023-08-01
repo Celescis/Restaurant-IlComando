@@ -1,0 +1,107 @@
+<ion-content>
+    <ion-header style="font-size: 1.4rem; text-align: center; background: #236f2d;color: #fff;">ENCUESTA EMPLEADO</ion-header>
+
+    <img class="imagen_usuario" src="{{src_imagen}}">
+
+    <form [formGroup]="forma" (ngSubmit)="agregarRespuesta()">
+
+      <ion-slides pager="false" scrollbar="true">
+        <ion-slide style="color: #fff;">
+          <ion-icon (click)="goToSlides2()" class="flecha-der heartbeat" name="caret-forward-outline"></ion-icon>
+
+
+          <h4 class="mb-3">¿En qué condiciones cree que encontró su área de trabajo?</h4>
+          <ion-icon name="thumbs-down-outline" style="margin-right: 10px; font-size: 25px;"></ion-icon>
+          <input style="width: 70%;" type="range" formControlName="satisfaccion" min="0" max="10">
+          <ion-icon name="thumbs-up-outline" style="font-size: 25px;margin-left: 10px;"></ion-icon>
+          <small class="invalid" *ngIf="forma.controls.satisfaccion.errors?.required &&
+            forma.controls.satisfaccion.touched">
+            Este campo es requerido
+          </small>
+
+          <br>
+          <br>
+
+          <div class="radio">
+            <h4 class="mb-3">¿Cómo fue su relación con sus compañeros?</h4>
+
+            <div class="form-check">
+              <input value="excelente" formControlName="companeros" type="radio" class="form-check-input">
+              <label class="form-check-label">Excelente</label>
+            </div>
+
+            <div class="form-check">
+              <input value="adecuada" formControlName="companeros" type="radio" class="form-check-input" required>
+              <label class="form-check-label">Regular</label>
+            </div>
+
+            <div class="form-check">
+              <input value="mala" type="radio" formControlName="companeros" class="form-check-input " required>
+              <label class="form-check-label">Mala</label>
+            </div>
+            <small class="invalid" *ngIf="forma.controls.companeros.errors?.required &&
+            forma.controls.companeros.touched">
+              Este campo es requerido
+            </small>
+          </div>
+        </ion-slide>
+
+
+
+        <ion-slide style="color: #fff;">
+          <ion-icon (click)="goToSlides1()" class="flecha-izq heartbeat" name="caret-back-outline"></ion-icon>
+          <div>
+            <h4 class="mb-3">¿Fue entregado todo en tiempo y forma?</h4>
+
+            <select class="form-select-input select" placeholder="Sexo" formControlName="aTiempo" style="color: #fff;">
+              <option value="">Elija...</option>
+              <option>Si</option>
+              <option>No</option>
+            </select>
+            <small class="invalid" *ngIf="forma.controls.aTiempo.errors?.required &&
+          forma.controls.aTiempo.touched">
+              Este campo es requerido
+            </small>
+          </div>
+
+          <h4 class="mb-3">¿Los clientes fueron acomodados correctamente?</h4>
+          <div class="checkbox" style="display: flex;">
+            <h4 class="checkbox" style="margin-left: 10px; float: left;"><input type="checkbox"
+                formControlName="clientes" (click)="onValorCapturado(1)" [checked]="si"> Si</h4>
+            <h4 class="checkbox" style="margin-left: 10px; float: right;"><input type="checkbox"
+                formControlName="clientes" (click)="onValorCapturado(2)" [checked]="no"> No</h4>
+            <small class="invalid" *ngIf="forma.controls.clientes.errors?.required &&
+          forma.controls.clientes.touched">
+              Este campo es requerido
+            </small>
+          </div>
+
+          <h4 class="mb-3">Comentarios</h4>
+          <input type="text" class="input" placeholder="Comentarios" formControlName="comentario" value="total">
+
+        </ion-slide>
+      </ion-slides>
+
+
+
+      <button type="submit" *ngIf="forma.valid" class="boton">Enviar</button>
+      <button type="button" *ngIf="forma.invalid" (click)="goToSlides()" class="boton">Continuar</button>
+
+    </form>
+
+    <ion-fab (click)="sacarFoto()"  horizontal="end" vertical="top" slot="fixed">
+      <ion-fab-button color="danger">
+        <ion-icon name="camera-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+    <ion-fab (click)="Saltear()" horizontal="start" vertical="bottom" slot="fixed">
+      <ion-fab-button color="dark">
+        <img src="/assets/atras.png" alt="">
+      </ion-fab-button>
+
+    </ion-fab>
+
+  </ion-content>
+  <div *ngIf="this.spinner" class="div-spinner">
+    <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+  </div>

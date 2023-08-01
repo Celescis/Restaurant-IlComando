@@ -1,0 +1,79 @@
+<ion-header [ngClass]="scanActivo?'scanner-activo':''" *ngIf="usuarioLogueado">
+
+  <nav class="navbar navbar-expand-lg " style="background-color: #236f2d;">
+    <span class="navbar-text ml-auto text-right" *ngIf="usuarioLogueado"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{usuarioLogueado.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{usuarioLogueado.nombre}}
+    </span>
+    <br>
+  </nav>
+  </ion-header>
+  
+  <ion-header [ngClass]="scanActivo?'scanner-activo':''" *ngIf="authService.usuarioAnonimo">
+  <nav class="navbar navbar-expand-lg " style="background-color: #236f2d;">
+    <span class="navbar-text ml-auto text-right" *ngIf="authService.usuarioAnonimo"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{authService.usuarioAnonimo.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{authService.usuarioAnonimo.nombre}}
+    </span>
+    <br>
+  </nav>
+  </ion-header>
+  
+  <ion-toolbar class="new-background-color" style="background-color: #003507;">
+    <ion-buttons slot="start">
+      <ion-button (click)="atras()"><ion-icon style="color: white;" name="arrow-back-outline" ></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title style="color: white; font-weight: 600;">CHAT DE CONSULTAS</ion-title>
+      </ion-toolbar>
+  
+  <ion-content >
+    
+    <div class="fondo" id="fondo">
+      <br>
+      <div *ngFor="let mensaje of chatService.nuevoArray" class="mensajes">
+        <div *ngIf="authService.UsuarioActivo.uid == mensaje.uid">
+            <div class="card_mensaje derecha" >
+                <p><b style="color: white; ">{{mensaje.texto}}</b></p>
+                <div>
+                  <span class="timestamp">&bull;<span class="posttime">{{mensaje.fecha}}</span></span>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!(authService.UsuarioActivo.uid === mensaje.uid)">
+            <div class="card_mensaje izquierda" >
+              <h3 class="autor_nombre ">{{mensaje.nombre}}</h3>
+  
+                <p><b style="color: white;">{{mensaje.texto}}</b></p>
+                <div>
+                  <span class="timestamp">&bull;<span class="posttime">{{mensaje.fecha}}</span></span>
+                </div>
+  
+            </div>
+        </div>
+          <br>
+          <br>
+      </div>
+      
+    </div>
+  
+        <div *ngIf="this.spinner" class="div-spinner">
+        <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+      </div>
+  </ion-content>
+  
+  <ion-footer>
+    <ion-toolbar class="new-background-color">
+      <ion-buttons slot="start">
+        <ion-input slot="start" placeholder="Escribe algo..." [(ngModel)]="mensaje" style="color: white;"></ion-input>
+      </ion-buttons>
+      
+      <ion-buttons slot="end">
+        <ion-button size="large" class="boton_enviar" (click)="enviarMensaje()">
+          <ion-icon name="send"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-footer>
+  

@@ -1,0 +1,133 @@
+<ion-header style="background-image: none;">
+  <nav class="navbar navbar-expand-lg " style="background-color: #236f2d;">
+    <span class="navbar-text ml-auto text-right" *ngIf="usuarioLogueado"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{usuarioLogueado.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{usuarioLogueado.nombre}}
+    </span>
+    <br>
+  </nav>
+
+  <!--NAVBAR SIDE-->
+  <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''" style="z-index: 10000;">
+    <div class="logo-container">
+      <button class="logo" (click)="toggleCollapse()"> <img src="assets/icon.png"
+          style="height: 40px;width: 50px; margin-right: 0px;margin-top: 2px;"></button>
+      <div class="logo-text" *ngIf="collapsed">Il Comando</div>
+      <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()"><i
+          class="fal fa-times close-icon"></i></button>
+    </div>
+    <ul class="sidenav-nav" *ngIf="usuarioLogueado">
+      <li class="sidenav-nav-item">
+        <h3 href="" class="sidenav-nav-link" (click)="altaProducto()">
+          <ion-icon name="add-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Agregar comida</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item">
+        <h3 class="sidenav-nav-link" (click)="mostrarEncuestas()">
+          <ion-icon name="help-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Ver encuesta</span>
+        </h3>
+      </li>
+    </ul>
+  </div>
+</ion-header>
+
+<ion-content>
+  <br>
+
+  <div>
+    <ion-slides style="width: 100%; margin-left: 0%; margin-right: 0%; text-align: center;">
+      <div class="card_producto" *ngIf="(listadoPedidosAprobados.length == 0 && listadoPedidosCocinados.length == 0)">
+        <h1 class="texto" 
+        style="text-align: center;">No hay nuevos pedidos
+        <img src="/assets/img/pizza.png" alt="" style="display: flex;align-items: center;text-align: center;height: 80px;width: 80px;margin-left: 35%;margin-top: 2%;"></h1>
+        
+      </div>
+      
+      <ng-container *ngIf="verPedidosAprobados">
+      <ion-slide class="slides" *ngFor="let pedido of listadoPedidosAprobados">
+        <div class="card_producto">
+          <div>
+            <div>
+              <h1>{{"Mesa: " + pedido.mesa}}</h1>
+              <table style="color: white;" class="table table-striped ">
+              <thead>
+              <tr>
+                <th>PRODUCTO</th>
+                <th>CANTIDAD</th>
+                <th>TIEMPO</th>
+              </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let producto of agruparProductos(pedido)">
+                  <tr>
+                    <td style="color: #fff">{{producto.nombre}}</td>
+                    <td style="color: #fff" *ngIf="producto.cantidad > 1">{{producto.cantidad}}</td>
+                    <td style="color: #fff" *ngIf="producto.cantidad === 1">1</td>
+                    <td style="color: #fff">{{producto.tiempoElaboracion}} minutos</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+              </table>
+            </div>
+
+              <div class="div_botones_mesas">
+                <button (click)="EntregarPedido(pedido)" class="boton boton_mesa">Entregar</button>
+              </div>
+          </div>
+        </div>
+      </ion-slide>
+      </ng-container>
+
+      <ng-container *ngIf="verPedidosCocinados">
+      <ion-slide class="slides" *ngFor="let pedido of listadoPedidosCocinados">
+        <div class="card_producto">
+          <div>
+            <div>
+              <h1>{{"Mesa: " + pedido.mesa}}</h1>
+              <table style="color: white;" class="table table-striped ">
+              <thead>
+              <tr>
+                <th>PRODUCTO</th>
+                <th>CANTIDAD</th>
+                <th>TIEMPO</th>
+              </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let producto of agruparProductos(pedido)">
+                  <tr>
+                    <td style="color: #fff">{{producto.nombre}}</td>
+                    <td style="color: #fff" *ngIf="producto.cantidad > 1">{{producto.cantidad}}</td>
+                    <td style="color: #fff" *ngIf="producto.cantidad === 1">1</td>
+                    <td style="color: #fff">{{producto.tiempoElaboracion}}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+              </table>
+            </div>
+
+              <div class="div_botones_mesas">
+                <button (click)="EntregarPedido(pedido)" class="boton boton_mesa">Entregar</button>
+              </div>
+          </div>
+        </div>
+
+      </ion-slide>
+      </ng-container>
+
+    </ion-slides>
+
+    <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+      <ion-fab-button color="danger" (click)="cerrarSesion()"
+        style="border: 3px solid #ffff; border-radius: 50%; overflow: hidden;">
+        <img src="./../../../assets/cerrar-sesion.png" class="img-logout" alt="">
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+</ion-content>
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

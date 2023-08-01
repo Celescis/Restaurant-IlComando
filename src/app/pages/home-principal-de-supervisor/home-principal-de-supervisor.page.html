@@ -1,0 +1,194 @@
+<ion-header style="background-image: none;">
+  <nav class="navbar navbar-expand-lg " style="background-color: #236f2d;">
+    <span class="navbar-text ml-auto text-right" *ngIf="usuarioLogueado"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{usuarioLogueado.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{usuarioLogueado.nombre}}
+    </span>
+    <br>
+  </nav>
+
+  <!--NAVBAR SIDE-->
+  <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''" style="z-index: 10000;">
+    <div class="logo-container">
+      <button class="logo" (click)="toggleCollapse()"> <img src="assets/icon.png"
+          style="height: 40px;width: 50px; margin-right: 0px;margin-top: 2px;"></button>
+      <div class="logo-text" *ngIf="collapsed">Il Comando</div>
+      <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()"><i
+          class="fal fa-times close-icon"></i></button>
+    </div>
+    <ul class="sidenav-nav" *ngIf="usuarioLogueado">
+      <li class="sidenav-nav-item">
+        <h3 class="sidenav-nav-link" (click)="irAAltas()">
+          <ion-icon name="person-add" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Altas</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item">
+        <h3 href="" class="sidenav-nav-link" (click)="irAReservas()">
+          <ion-icon name="calendar-number" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Reservas</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item">
+        <h3 href="" class="sidenav-nav-link" (click)="irAClientes()">
+          <ion-icon name="people" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Gestionar Clientes</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item">
+        <h3 href="" class="sidenav-nav-link" (click)="irAEncuestas()">
+          <ion-icon name="documents" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Encuestas</span>
+        </h3>
+      </li>
+    </ul>
+  </div>
+</ion-header>
+
+<ion-content>
+
+  <!-- LISTADO CLIENTES -->
+  <div *ngIf="verListaDeClientes" style="margin-top: 15%;">
+    <ion-card
+      style="
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 2px 2px 4px #000;
+      "
+      class="tarjeta-usuario"
+      *ngFor="let item of listadoClientes;"
+    >
+      <img
+        style="
+          display: block;
+          width: 8rem;
+          height: 8rem;
+          object-fit: cover;
+          margin-left: auto;
+          margin-right: auto;
+          margin-top: 1rem;
+          border-radius: 50%;
+          border: 2px solid #fff;
+          box-shadow: 2px 2px 4px #000;
+        "
+        src="{{item.foto}}"
+      />
+      <ion-card-header>
+        <ion-card-title
+          style="
+            text-align: center;
+            color: #fff;
+            text-shadow: 1px 1px #000;
+            margin-bottom: 1rem;
+          "
+          >{{item.apellido}} {{item.nombre}}</ion-card-title
+        >
+        <button
+          style="
+            width: 100%;
+            font-size: 1.5rem;
+            box-shadow: 2px 2px 4px #000;
+          "
+          class="btn btn-success"
+          *ngIf="!item.aprobado"
+          (click)="habilitarDeshabilitarCliente(item)"
+        >
+        <ion-icon name="checkmark-circle"></ion-icon>
+          Habilitar
+        </button>
+        <button
+          style="
+            width: 100%;
+            font-size: 1.5rem;
+            box-shadow: 2px 2px 4px #000;
+            color: #fff;
+            background-color: rgb(109, 0, 0);
+          "
+          class="btn btn-danger"
+          *ngIf="item.aprobado"
+          (click)="habilitarDeshabilitarCliente(item)"
+        >
+        <ion-icon name="close-circle"></ion-icon>
+          Deshabilitar
+        </button>
+      </ion-card-header>
+      <!-- <div class="btn-estadisticas heartbeat">
+        <ion-icon name="bar-chart"></ion-icon>
+      </div> -->
+    </ion-card>
+  </div>
+
+     <!-- LISTADO RESERVAS -->
+  <div *ngIf="verListaDeReservas" style="margin-top: 15%;">
+    <div class="tarjeta-usuario" *ngIf="listadoReservas.length==0">
+      <h2 style="text-align: center; font-weight: bolder; color: #ffffff;" >Aún no se ha realizado ninguna reserva</h2>
+    </div>
+    <ion-card
+      style="
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        box-shadow: 2px 2px 4px #000;
+      "
+      class="tarjeta-usuario"
+      *ngFor="let item of listadoReservas;"
+    >
+      <ion-card-header>
+        <h3 style="color: #000">Mesa: {{item.mesa}}</h3>
+        <h3 style="color: #000">Fecha: {{item.dia}}</h3>
+        <h3 style="color: #000">Horario: {{item.horario}}</h3>
+        <ion-card-title
+          style="
+            text-align: center;
+            color: #fff;
+            text-shadow: 1px 1px #000;
+            margin-bottom: 1rem;
+          "
+          >{{item.cliente.apellido}} {{item.cliente.nombre}}</ion-card-title
+        >
+        <button
+          style="
+            width: 100%;
+            font-size: 1.5rem;
+            box-shadow: 2px 2px 4px #000;
+          "
+          class="btn btn-success"
+          *ngIf="!item.aprobada"
+          (click)="habilitarDeshabilitarReserva(item)"
+        >
+        <ion-icon name="checkmark-circle"></ion-icon>
+          Aprobar
+        </button>
+        <button
+          style="
+            width: 100%;
+            font-size: 1.5rem;
+            box-shadow: 2px 2px 4px #000;
+            color: #fff;
+            background-color: rgb(109, 0, 0);
+          "
+          class="btn btn-danger"
+          *ngIf="item.aprobada"
+          (click)="habilitarDeshabilitarReserva(item)"
+        >
+        <ion-icon name="close-circle"></ion-icon>
+          No aprobar
+        </button>
+      </ion-card-header>
+    </ion-card>
+  </div>
+  <ion-fab
+  horizontal="end"
+  vertical="bottom"
+  slot="fixed"
+  (click)="cerrarSesion()"
+>
+  <ion-fab-button style="border: 3px solid #ffffff; border-radius: 50%; overflow: hidden;">
+    <img src="./../../../assets/cerrar-sesion.png" class="img-logout" alt="">
+  </ion-fab-button>
+</ion-fab>
+</ion-content>
+
+    <div *ngIf="this.spinner" class="div-spinner">
+      <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+    </div>

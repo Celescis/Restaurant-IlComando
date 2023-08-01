@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "905166952303",
+    "project_id": "pps-lacomanda-a7bf0",
+    "storage_bucket": "pps-lacomanda-a7bf0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:905166952303:android:a7682a5ca4cdc9bc7dba9a",
+        "android_client_info": {
+          "package_name": "com.comandappsfinal.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "905166952303-rakrbboso9k6ckcbqlfo1991higq8h4a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKQuL1DrcUklIwTGx-huUoFdaMYwzlsmw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "905166952303-jpmdvsjgi65pab213aalmk6heukng89i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

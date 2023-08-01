@@ -1,0 +1,64 @@
+<ion-content>
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" (click)="cerrarSesion()">
+    <ion-fab-button style="border: 3px solid #ffffff; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/cerrar-sesion.png" class="img-logout" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-header style="text-align: center; font-size: 1.5rem; background: #236f2d;     color:#fff;">
+    MENU DE ALTAS
+  </ion-header>
+
+  <!-- BOTON DE RETORNO AL HOME DEL SUPERVISOR -->
+  <ion-fab horizontal="start" vertical="bottom" slot="fixed">
+    <ion-fab-button (click)="irAHomeSupervisor()"
+      style="border: 3px solid #00000000; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/atras.png" class="img-logout" alt="">
+    </ion-fab-button>
+
+  </ion-fab>
+
+  <ion-slides pager="true" scrollbar="true">
+    <ion-slide class="slide">
+      <div>
+        <h2 style="    color:#fff;">DUEÑO / SUPERVISOR</h2>
+        <a routerLink="/supervisor-registro">
+          <img src="../../../assets/gerente.png" alt="gerente" /></a>
+      </div>
+    </ion-slide>
+    <ion-slide class="slide">
+      <div>
+        <h2 style="    color:#fff;">EMPLEADO</h2>
+        <a routerLink="/empleado-registro">
+          <img src="../../../assets/empleados.png" alt="empleado" /></a>
+      </div>
+    </ion-slide>
+    <ion-slide class="slide"
+      *ngIf="authService.UsuarioActivo.perfil != 'supervisor' && authService.UsuarioActivo.perfil != 'dueño'">
+      <div>
+        <h2 style="    color:#fff;">CLIENTE</h2>
+        <a routerLink="/cliente-registro">
+          <img src="../../../assets/cliente.png" alt="cliente" /></a>
+      </div>
+    </ion-slide>
+    <ion-slide class="slide">
+      <div>
+        <h2 style="    color:#fff;">MESA</h2>
+        <a routerLink="/mesa-registro">
+          <img src="../../../assets/dinner.png" alt="mesa" /></a>
+      </div>
+    </ion-slide>
+    <ion-slide class="slide"
+      *ngIf="authService.UsuarioActivo.perfil != 'supervisor' && authService.UsuarioActivo.perfil != 'dueño'">
+      <div>
+        <h2 style="    color:#fff;">Alta Producto</h2>
+        <a routerLink="/alta-productos">
+          <img src="../../../assets/almuerzo.png" alt="producto" /></a>
+      </div>
+    </ion-slide>
+  </ion-slides>
+</ion-content>
+
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

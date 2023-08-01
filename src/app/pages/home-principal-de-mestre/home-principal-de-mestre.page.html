@@ -1,0 +1,77 @@
+<ion-header style="background-image: none;">
+  <nav class="navbar navbar-expand-lg " style="background-color: #236f2d;">
+    <span class="navbar-text ml-auto text-right" *ngIf="usuarioLogueado"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{usuarioLogueado.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{usuarioLogueado.nombre}}
+    </span>
+    <br>
+  </nav>
+
+  <!--NAVBAR SIDE-->
+  <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''" style="z-index: 10000;">
+    <div class="logo-container">
+      <button class="logo" (click)="toggleCollapse()"> <img src="assets/icon.png"
+          style="height: 40px;width: 50px; margin-right: 0px;margin-top: 2px;"></button>
+      <div class="logo-text" *ngIf="collapsed">Il Comando</div>
+      <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()"><i
+          class="fal fa-times close-icon"></i></button>
+    </div>
+    <ul class="sidenav-nav" *ngIf="usuarioLogueado">
+      <li class="sidenav-nav-item">
+        <h3 class="sidenav-nav-link" (click)="mostrarEncuestas()">
+          <ion-icon name="help-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Ver encuesta</span>
+        </h3>
+      </li>
+    </ul>
+  </div>
+</ion-header>
+<ion-content>
+  <br>
+  <div style="text-align:center">
+    <ion-slides style="width: 100%; margin-left: 0%; margin-right: 0%;">
+      <div class="card_producto" *ngIf="listadoClientes.length == 0">
+        <h1 class="texto" >No hay clientes esperando ser acomodados</h1>
+      </div>
+
+      <ion-slide class="slides" *ngFor="let cliente of listadoClientes">
+
+        <div class="card_producto">
+          <div>
+            <h3 style="display: flex; align-items: center; justify-content: center; text-align: center;"><b>{{cliente.nombre}}</b></h3>
+          </div>
+          <img class="img-producto" src="{{cliente.foto}}">
+          <div>
+            <div *ngIf="cliente.mesaAsignada == null">
+              <h3>Mesas disponibles:</h3>
+              <div class="div_botones_mesas">
+                <button (click)="asignarMesa(cliente,mesa.numero)" class="boton"
+                  *ngFor="let mesa of mesasDisponibles">{{mesa.numero}}</button>
+              </div>
+            </div>
+
+            <div *ngIf="cliente.mesaAsignada!=null">
+              <h3>El cliente ya tiene una mesa asignada</h3>
+            </div>
+          </div>
+        </div>
+
+      </ion-slide>
+
+    </ion-slides>
+
+    <ion-fab horizontal="end"
+    vertical="bottom"
+    slot="fixed"
+    (click)="cerrarSesion()">
+      <ion-fab-button color="danger"  style="border: 3px solid #ffff; border-radius: 50%; overflow: hidden;">
+       <img src="/assets/cerrar-sesion.png" alt="">
+      </ion-fab-button>
+    </ion-fab>
+  </div>
+
+</ion-content>
+<div *ngIf="this.spinner" class="div-spinner">
+<img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

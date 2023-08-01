@@ -1,0 +1,136 @@
+ion-content {
+  --background: url('/assets/background.svg') !important;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+.containerForm {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  padding: 8px;
+  width: 100%;
+  min-width: 100%;
+  left: 50%;
+  top: 100%;
+  margin: 6% auto;
+  border: 8px groove #236f2d;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.049);
+  backdrop-filter: blur(10px);
+  box-shadow: 5px 20px 50px #000;
+  font-family: 'Dosis', sans-serif;
+}
+
+input[type=text],
+input[type=password],
+input[type=number] {
+  width: 100%;
+  padding: 15px;
+  margin-top: 5px;
+  display: inline-block;
+  border: none;
+  color: #ffffff;
+  font-family: 'Dosis', sans-serif;
+  font-weight: bolder;
+}
+
+.error-text {
+  font-size: 14px;
+}
+
+@-webkit-keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0)
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg)
+  }
+}
+
+@keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0)
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg)
+  }
+}
+
+.custom-spinner {
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: 150px;
+  height: 150px;
+  -webkit-animation: rotate-center 1s ease-in-out infinite both;
+  animation: rotate-center 1s ease-in-out infinite both;
+}
+
+.div-spinner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000000000000000000000000;
+  background-color: rgba(33, 41, 45, 0.601);
+  background-repeat: no-repeat;
+  background-size: 150px;
+  background-position: center;
+}
+
+.custom-fab {
+  position: absolute;
+  font-size: medium;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+.custom-fab-button {
+  width: 50px;
+  height: 50px;
+}
+
+.custom-fab2 {
+  margin-top: 20%;
+  position: absolute;
+  font-size: medium;
+  font-weight: 400;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+}
+
+ion-item:focus-within {
+  border-color: rgb(255, 0, 0);
+  box-shadow: 0 0 8px 0 rgb(255, 0, 0);
+}
+
+.transparent-header {
+  --background: rgba(0, 0, 0, 0);
+  font-family: 'Dosis', sans-serif;
+}
+
+.segment {
+  --background: #236f2d;
+  font-family: 'Dosis', sans-serif;
+  z-index: -1;
+}

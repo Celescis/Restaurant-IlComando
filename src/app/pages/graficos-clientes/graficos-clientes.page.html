@@ -1,0 +1,46 @@
+<ion-content>
+  <!--VISTAS CHARTS-->
+  <div class="charts">
+    <ion-header style="font-size: 1.4rem; background: #236f2d;">GRÁFICOS ENCUESTAS</ion-header>
+    <img class="imagen_usuario" src="../../../assets/grafico.png">
+    <ion-slides pager="false" scrollbar="true">
+      <ion-slide>
+        <div>
+          <ion-icon class="flecha-der heartbeat" name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <h4>Variedad menú</h4>
+          <canvas id="chartClientePrecioAdecuado"></canvas>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div>
+          <ion-icon class="flecha-der heartbeat" name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <ion-icon class="flecha-izq heartbeat" name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4>Ambiente del lugar</h4>
+          <div style="height: 300px; width: 100%">
+            <canvas id="chartClienteSatisfaccion"></canvas>
+          </div>
+        </div>
+      </ion-slide>
+      <ion-slide>
+        <div>
+          <ion-icon class="flecha-der heartbeat" name="caret-forward-outline" (click)="irASlideAdelante()"></ion-icon>
+          <ion-icon class="flecha-izq heartbeat" name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4>Valoración de juegos</h4>
+          <canvas id="chartClienteVariedadMenu"></canvas>
+        </div>
+      </ion-slide>
+      
+      <ion-slide>
+        <div>
+          <ion-icon class="flecha-izq heartbeat" name="caret-back-outline" (click)="irASlideAtras()"></ion-icon>
+          <h4>Buen trato del mozo</h4>
+          <canvas id="chartClienteRecomendaria"></canvas>
+        </div>
+      </ion-slide>
+    </ion-slides>
+  </div>
+</ion-content>
+
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

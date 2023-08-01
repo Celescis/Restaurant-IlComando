@@ -1,0 +1,204 @@
+<ion-header style="background-image: none;">
+  <nav class="navbar navbar-expand-lg " style="background-color: #236f2d;">
+    <span class="navbar-text ml-auto text-right" *ngIf="usuarioLogueado"
+      style="font-size: 18px;padding: 0;font-weight: bolder; margin:0 auto;text-transform: uppercase; margin-right: 10px;">
+      <img src="{{usuarioLogueado.foto}}" alt=""
+        style="width: 30px;height: 30px;margin-right: 2%;margin: 0;padding: 0;"> {{usuarioLogueado.nombre}}
+    </span>
+    <br>
+  </nav>
+
+  <!--NAVBAR SIDE-->
+  <div class="sidenav" [ngClass]="collapsed ? 'sidenav-collapsed':''" style="z-index: 10000;">
+    <div class="logo-container">
+      <button class="logo" (click)="toggleCollapse()"> <img src="assets/icon.png"
+          style="height: 40px;width: 50px; margin-right: 0px;margin-top: 2px;"></button>
+      <div class="logo-text" *ngIf="collapsed">Il Comando</div>
+      <button class="btn-close" *ngIf="collapsed" (click)="closeSidenav()"><i
+          class="fal fa-times close-icon"></i></button>
+    </div>
+    <ul class="sidenav-nav" *ngIf="usuarioLogueado">
+      <h3 class="sidenav-nav-link" *ngIf="collapsed">PEDIDOS</h3>
+      <li class="sidenav-nav-item">
+        <h3 class="sidenav-nav-link" (click)="MostrarVistaPreparados()">
+          <ion-icon name="checkmark-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Preparados</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item">
+        <h3 href="" class="sidenav-nav-link" (click)="MostrarVistaNoAprobados()">
+          <ion-icon name="close-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">No aprobados</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item">
+        <h3 href="" class="sidenav-nav-link" (click)="MostrarVistaAConfirmar()">
+          <ion-icon name="card" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Pagados</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item">
+        <h3 href="" class="sidenav-nav-link" (click)="chatear()">
+          <ion-icon name="chatbubbles" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Chat</span>
+        </h3>
+      </li>
+      <li class="sidenav-nav-item">
+        <h3 class="sidenav-nav-link" (click)="mostrarEncuestas()">
+          <ion-icon name="help-circle" class="sidenav-link-icon"></ion-icon>
+          <span class="sidenav-link-text" *ngIf="collapsed">Ver encuesta</span>
+        </h3>
+      </li>
+    </ul>
+  </div>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="MostrarNoAprobados">
+    <ion-slides style="width: 100%; margin-left: 0%; margin-right: 0%;margin-top: 10%;">
+      <div class="card_producto" *ngIf="listadoPedidosNoAprobados.length == 0">
+        <h1 class="texto">No hay pedidos por aprobar</h1>
+      </div>
+
+      <ion-slide class="slides" *ngFor="let pedido of listadoPedidosNoAprobados">
+        <div class="card_producto">
+          <div>
+            <div>
+              <h1>{{"Mesa: " + pedido.mesa}}</h1>
+              <table style="color: white;" class="table table-striped ">
+              <thead>
+              <tr>
+                <th>PRODUCTO</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO</th>
+              </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let producto of agruparProductos(pedido)">
+                  <tr>
+                    <td style="color: #fff">{{producto.nombre}}</td>
+                    <td style="color: #fff" *ngIf="producto.cantidad > 1">{{producto.cantidad}}</td>
+                    <td style="color: #fff" *ngIf="producto.cantidad === 1">1</td>
+                    <td style="color: #fff">${{producto.precio * producto.cantidad}}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="2" style="font-size: 25; font-weight: bolder;">TOTAL: ${{pedido.total}}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div>
+              <div class="div_botones_mesas" style="display: flex; justify-content: space-between;">
+                <button (click)="RechazarPedido(pedido)" class="boton boton_mesa">Rechazar</button>
+                <button (click)="AprobarPedido(pedido)" class="boton boton_mesa">Aprobar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </ion-slide>
+
+    </ion-slides>
+  </div>
+
+  <div *ngIf="MostrarPreparados">
+    <ion-slides style="width: 100%; margin-left: 0%; margin-right: 0%;margin-top: 10%;text-align: center;">
+      <div class="card_producto" *ngIf="listadoPedidosPreparados.length == 0">
+        <h1 class="texto">Aun no hay pedidos para llevar</h1>
+      </div>
+
+      <ion-slide class="slides" *ngFor="let pedido of listadoPedidosPreparados">
+
+        <div class="card_producto">
+          <div>
+            <div>
+              <h1>{{"Mesa: " + pedido.mesa}}</h1>
+              <table style="color: white;" class="table table-striped ">
+              <thead>
+              <tr>
+                <th>PRODUCTO</th>
+                <th>CANTIDAD</th>
+                <th>PRECIO</th>
+              </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let producto of agruparProductos(pedido)">
+                  <tr>
+                    <td style="color: #fff">{{producto.nombre}}</td>
+                    <td style="color: #fff" *ngIf="producto.cantidad > 1">{{producto.cantidad}}</td>
+                    <td style="color: #fff" *ngIf="producto.cantidad === 1">1</td>
+                    <td style="color: #fff">${{producto.precio * producto.cantidad}}</td>
+                  </tr>
+                </ng-container>
+              </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="2" style="font-size: 25; font-weight: bolder;">TOTAL: ${{pedido.total}}</td>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+
+            <div>
+              <div class="div_botones_mesas">
+                <button (click)="EntregarPedido(pedido)" class="boton boton_mesa">Entregar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </ion-slide>
+
+    </ion-slides>
+  </div>
+
+  <div *ngIf="MostrarConfirmacionPago">
+
+    <ion-slides style="width: 100%; margin-left: 0%; margin-right: 0%;margin-top: 10%;">
+      <div class="card_producto" *ngIf="listadoPedidosEsperando.length == 0">
+        <h1 class="texto">No hay pagos por confirmar</h1>
+      </div>
+
+      <ion-slide class="slides" *ngFor="let pedido of listadoPedidosEsperando">
+
+        <div class="card_producto">
+          <div>
+            <div>
+              <h1 style="display: flex; align-items: center; justify-content: center; text-align: center;">
+                {{ "Mesa: " + pedido.mesa }}
+              </h1>
+              
+              <h4><b>Subtotal: $</b>{{pedido.total}}</h4>
+              <h4><b>Descuento Juego:</b> ${{(pedido.total * pedido.descuentoJuego)/100}}</h4>
+              <h4><b>Propina: $</b>{{pedido.propina}}</h4>
+              <h4><b>Total pagado: $</b>{{pedido.propina + pedido.total - ((pedido.total * pedido.descuentoJuego)/100)}}
+              </h4>
+            </div>
+
+              <div class="div_botones_mesas">
+                <button (click)="ConfirmarPago(pedido)" class="boton boton_mesa">Confirmar pago</button>
+              </div>
+
+          </div>
+        </div>
+
+      </ion-slide>
+
+    </ion-slides>
+  </div>
+
+
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed" (click)="cerrarSesion()">
+    <ion-fab-button style="border: 3px solid #ffff; border-radius: 50%; overflow: hidden;">
+      <img src="./../../../assets/cerrar-sesion.png" class="img-logout" alt="">
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
+<div *ngIf="this.spinner" class="div-spinner">
+  <img src="./../../../assets/icon.png" alt="Spinner" class="custom-spinner" />
+</div>

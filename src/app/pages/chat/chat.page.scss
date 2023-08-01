@@ -1,0 +1,121 @@
+ion-content{
+font-family: Dosis;
+  --background: url('./../../../assets/background.svg');
+  --background-color: #131313;
+  --background-blend-mode: overlay;
+  --background-size: cover;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+
+@-webkit-keyframes rotate-center{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}@keyframes rotate-center{0%{-webkit-transform:rotate(0);transform:rotate(0)}100%{-webkit-transform:rotate(360deg);transform:rotate(360deg)}}
+.custom-spinner {
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  width: 150px;
+  height: 150px;
+  -webkit-animation:rotate-center 1s ease-in-out infinite both;animation:rotate-center 1s ease-in-out infinite both;
+}
+.div-spinner{
+ position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000000000000000000000000;
+  background-color: rgba(33, 41, 45, 0.601);
+  background-repeat: no-repeat;
+  background-size: 150px;
+  background-position: center;
+}
+
+.new-background-color
+{
+  --background: #236f2d;
+}
+
+.posttime {
+    margin-left: 3px;
+}
+
+.timestamp {
+    color: rgba(0, 0, 0, 0.38);
+    font-size: 16pt;
+    margin-bottom: 10px;
+}
+
+.fondo
+{   
+    overflow: scroll;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    padding: 0.3rem;
+}
+
+.fondo::-webkit-scrollbar {
+  display: none;
+}
+
+
+.card_mensaje
+{   
+    background-color: #236f2d;
+    padding: 2%;
+    width: 60%;
+    color: rgb(255, 255, 255);
+    font-weight: 600;
+    border-radius: 15px;
+    margin-bottom: 2%;
+    z-index: 10000000;
+    opacity: 1;
+}
+
+ion-card
+{
+    --background: #236f2d;
+    --ion-background-color: #236f2d;
+
+}
+
+.derecha
+{
+    margin-right: 2%;
+    float:right;
+    text-align: right;
+}
+
+.izquierda
+{
+    margin-left: 2%;
+    float:left;
+    text-align: left;
+}
+
+.autor_nombre
+{
+    font-weight: 700;
+    font-size: large;
+    color: rgb(215, 217, 218);
+}
+
+.boton_enviar
+{
+    height: 50px;
+    width: 50px;
+    color: white;
+    background-color: #009314;
+    color: white;
+    font-weight: 700;
+    font-size: 200%;
+    text-shadow: 2px 2px #000000;
+    border-radius: 20px;
+}
